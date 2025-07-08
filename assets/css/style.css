@@ -464,6 +464,18 @@ footer {
     object-fit: cover;
 }
 
+/* Ajoutez APRÈS .gallery-item img { ... } */
+.gallery-item img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+/* Ajoutez aussi pour les model cards */
+.model-card img:hover {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+}©
+
 /* Valuation Tool */
 .valuation-tool {
     padding: 4rem 2rem;
@@ -577,4 +589,38 @@ footer {
     .safety-icons {
         margin-top: 2rem;
     }
+}
+
+/* Effets hover pour les images */
+.gallery-item img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+    transition: all 0.3s ease;
+}
+
+.model-card img:hover {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+    transition: all 0.3s ease;
+}
+
+/* Amélioration des transitions */
+.gallery-item img,
+.model-card img {
+    transition: all 0.3s ease;
+}
+
+
+/* Fix footer centering */
+footer p {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Fix image loading issues */
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
 }
