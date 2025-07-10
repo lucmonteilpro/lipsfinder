@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - Lips Finder</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .dashboard {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+        .upload-section {
+            background: #f8f9fa;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .upload-box {
+            border: 3px dashed #e91e63;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-box:hover {
+            background: #fce4ec;
+            border-color: #d81557;
+        }
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .preview-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .preview-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .preview-item .price {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: #e91e63;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">💋 Lips Finder</a>
+            <div class="nav-links">
+                <a href="seller.html">Dashboard</a>
+                <a href="#">Earnings</a>
+                <a href="#">Settings</a>
+                <a href="#" class="btn-primary">Upload New</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <h1>Welcome back, Seller!</h1>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>$0</h3>
+                <p>Total Earnings</p>
+            </div>
+            <div class="stat-card">
+                <h3>0</h3>
+                <p>Photos Uploaded</p>
+            </div>
+            <div class="stat-card">
+                <h3>0</h3>
+                <p>Total Views</p>
+            </div>
+            <div class="stat-card">
+                <h3>0</h3>
+                <p>Photos Sold</p>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <h2>Upload New Lip Photos</h2>
+            <p>Upload high-quality lip photos to start earning. Photos are automatically watermarked.</p>
+            
+            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                <span style="font-size: 4rem;">📸</span>
+                <h3>Click to Upload Photos</h3>
+                <p>or drag and drop files here</p>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="handleFiles(this.files)">
+            </div>
+            
+            <div id="previewContainer" class="preview-grid"></div>
+        </div>
+
+        <!-- My Photos -->
+        <div class="my-photos">
+            <h2>My Uploaded Photos</h2>
+            <div class="preview-grid" id="myPhotosGrid">
+                <p style="grid-column: 1/-1; text-align: center; color: #999;">No photos uploaded yet. Start uploading to see them here!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle file upload
+        function handleFiles(files) {
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = '';
+            
+            Array.from(files).forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'preview-item';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <input type="number" class="price" placeholder="$5" min="5" max="500" value="10">
+                        `;
+                        previewContainer.appendChild(div);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Show upload button
+            if (files.length > 0) {
+                setTimeout(() => {
+                    const uploadBtn = document.createElement('button');
+                    uploadBtn.className = 'btn-primary';
+                    uploadBtn.textContent = 'Upload & Add Watermark';
+                    uploadBtn.onclick = uploadPhotos;
+                    uploadBtn.style.marginTop = '2rem';
+                    previewContainer.appendChild(uploadBtn);
+                }, 500);
+            }
+        }
+        
+        // Mock upload function
+        function uploadPhotos() {
+            alert('Photos uploaded successfully! (This is a demo - in production, photos would be watermarked and stored)');
+            document.getElementById('previewContainer').innerHTML = '';
+            
+            // Add to "My Photos" section
+            const myPhotosGrid = document.getElementById('myPhotosGrid');
+            myPhotosGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: green;">✓ Photos uploaded and watermarked!</p>';
+        }
+        
+        // Drag and drop
+        const uploadBox = document.querySelector('.upload-box');
+        
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.style.background = '#fce4ec';
+        });
+        
+        uploadBox.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadBox.style.background = 'transparent';
+        });
+        
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.style.background = 'transparent';
+            handleFiles(e.dataTransfer.files);
+        });
+    </script>
+</body>
+</html>

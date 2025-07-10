@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Lips - Lips Finder</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .browse-section {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+        .filters {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #e91e63;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #e91e63;
+            color: white;
+        }
+        .lips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .lip-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .lip-card:hover {
+            transform: translateY(-5px);
+        }
+        .lip-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .lip-info {
+            padding: 1.5rem;
+        }
+        .lip-price {
+            font-size: 1.5rem;
+            color: #e91e63;
+            font-weight: bold;
+        }
+        .lip-seller {
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .modal img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">💋 Lips Finder</a>
+            <div class="nav-links">
+                <a href="browse.html">Browse</a>
+                <a href="seller.html">Sell</a>
+                <a href="#">Cart (0)</a>
+                <a href="#" class="btn-primary">Sign In</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Browse Section -->
+    <div class="browse-section">
+        <h1>Browse Lip Photos</h1>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterPhotos('all')">All</button>
+            <button class="filter-btn" onclick="filterPhotos('red')">Red Lips</button>
+            <button class="filter-btn" onclick="filterPhotos('pink')">Pink Lips</button>
+            <button class="filter-btn" onclick="filterPhotos('nude')">Nude Lips</button>
+            <button class="filter-btn" onclick="filterPhotos('glossy')">Glossy</button>
+            <button class="filter-btn" onclick="filterPhotos('matte')">Matte</button>
+            <select style="padding: 0.5rem 1rem; border-radius: 25px; border: 2px solid #e91e63;">
+                <option>Sort by: Popular</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest First</option>
+            </select>
+        </div>
+
+        <!-- Lips Grid -->
+        <div class="lips-grid" id="lipsGrid">
+            <!-- Demo photos - in production these would come from database -->
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" style="float: right; font-size: 2rem; cursor: pointer;">&times;</span>
+            <img id="modalImage" src="" alt="Lip photo">
+            <h2>Purchase This Photo</h2>
+            <p class="lip-price" id="modalPrice">$10</p>
+            <p>High resolution, watermark-free version</p>
+            <button class="btn-primary" onclick="purchasePhoto()" style="width: 100%; margin-top: 2rem;">Buy Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Demo data - in production this would come from API
+        const demoPhotos = [
+            { id: 1, price: 15, seller: 'BeautyLips', category: 'red', image: 'assets/images/gallery/lips1.jpg' },
+            { id: 2, price: 10, seller: 'GlossyQueen', category: 'pink', image: 'assets/images/gallery/lips2.jpg' },
+            { id: 3, price: 20, seller: 'LipArt', category: 'nude', image: 'assets/images/gallery/lips3.jpg' },
+            { id: 4, price: 12, seller: 'PerfectPout', category: 'red', image: 'assets/images/gallery/lips4.jpg' },
+            { id: 5, price: 18, seller: 'LipLover', category: 'glossy', image: 'assets/images/gallery/lips5.jpg' },
+            { id: 6, price: 25, seller: 'ProLips', category: 'matte', image: 'assets/images/gallery/lips6.jpg' },
+            { id: 7, price: 15, seller: 'BeautyPro', category: 'pink', image: 'assets/images/gallery/lips7.jpg' },
+            { id: 8, price: 30, seller: 'LuxuryLips', category: 'red', image: 'assets/images/gallery/lips8.jpg' }
+        ];
+
+        // Load photos
+        function loadPhotos(photos = demoPhotos) {
+            const grid = document.getElementById('lipsGrid');
+            grid.innerHTML = photos.map(photo => `
+                <div class="lip-card" onclick="showPurchaseModal(${photo.id}, '${photo.image}', ${photo.price})">
+                    <img src="${photo.image}" alt="Lip photo">
+                    <div class="lip-info">
+                        <div class="lip-price">$${photo.price}</div>
+                        <div class="lip-seller">by ${photo.seller}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter photos
+        function filterPhotos(category) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter photos
+            if (category === 'all') {
+                loadPhotos();
+            } else {
+                const filtered = demoPhotos.filter(photo => photo.category === category);
+                loadPhotos(filtered);
+            }
+        }
+
+        // Show purchase modal
+        function showPurchaseModal(id, image, price) {
+            document.getElementById('modalImage').src = image;
+            document.getElementById('modalPrice').textContent = `$${price}`;
+            document.getElementById('purchaseModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('purchaseModal').style.display = 'none';
+        }
+
+        // Purchase photo
+        function purchasePhoto() {
+            alert('Demo: In production, this would process payment via Stripe and provide download link');
+            closeModal();
+        }
+
+        // Load photos on page load
+        loadPhotos();
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('purchaseModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lucmonteilpro.github.io/lipsfinder/sitemap.xml
