@@ -11,21 +11,13 @@
     
     <link rel="stylesheet" href="assets/css/style.css">
     
-    <!-- Fix 100% zoom issue -->
     <style>
-        html {
+        html, body {
             zoom: 1 !important;
             transform: scale(1) !important;
             transform-origin: 0 0 !important;
         }
         
-        body {
-            zoom: 1 !important;
-            transform: scale(1) !important;
-            transform-origin: 0 0 !important;
-        }
-        
-        /* Browse Page Specific Styles */
         .browse-header {
             background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
             padding: 6rem 2rem 4rem;
@@ -97,6 +89,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
         }
         
         .photo-card:hover {
@@ -155,6 +148,12 @@
             transform: scale(1.05);
         }
         
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .stats-bar {
             background: var(--primary-color);
             color: white;
@@ -191,6 +190,48 @@
         }
         
         .back-home:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+        
+        .error {
+            text-align: center;
+            padding: 2rem;
+            color: #e74c3c;
+            background: #ffeaa7;
+            border-radius: 10px;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        .favorite-btn.active {
             background: var(--primary-color);
             color: white;
         }
@@ -232,17 +273,17 @@
             <div class="filter-group">
                 <label for="category">Category</label>
                 <select id="category">
-                    <option value="all">All Photos</option>
-                    <option value="models">Model Photos</option>
-                    <option value="lips">Lip Close-ups</option>
+                    <option value="">All Photos</option>
                     <option value="glossy">Glossy</option>
                     <option value="natural">Natural</option>
+                    <option value="artistic">Artistic</option>
+                    <option value="professional">Professional</option>
                 </select>
             </div>
             <div class="filter-group">
                 <label for="price">Price Range</label>
                 <select id="price">
-                    <option value="all">All Prices</option>
+                    <option value="">All Prices</option>
                     <option value="2">€2.00</option>
                     <option value="5">€5.00 and under</option>
                 </select>
@@ -255,6 +296,10 @@
                     <option value="price-low">Price: Low to High</option>
                 </select>
             </div>
+            <div class="filter-group">
+                <label for="search">Search</label>
+                <input type="text" id="search" placeholder="Search photos...">
+            </div>
         </div>
     </section>
 
@@ -262,7 +307,7 @@
     <section class="stats-bar">
         <div class="stats-row">
             <div class="stat-item">
-                <h3 id="total-photos">45</h3>
+                <h3 id="total-photos">8</h3>
                 <p>Photos Available</p>
             </div>
             <div class="stat-item">
@@ -278,199 +323,7 @@
 
     <!-- Photos Grid -->
     <section class="photos-grid" id="photos-container">
-        <!-- Models Photos -->
-        <div class="photo-card" onclick="buyPhoto('model_00', '€2.00')">
-            <img src="assets/images/models/model_00.jpg" alt="Professional Model Portrait" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Professional Model Portrait</div>
-                <div class="photo-model">by @sophia_verified ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_01', '€2.00')">
-            <img src="assets/images/models/model_01.jpg" alt="Elegant Beauty Shot" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Elegant Beauty Shot</div>
-                <div class="photo-model">by @emma_lips ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_02', '€2.00')">
-            <img src="assets/images/models/model_02.jpg" alt="Natural Beauty Portrait" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Natural Beauty Portrait</div>
-                <div class="photo-model">by @olivia_model ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_03', '€2.00')">
-            <img src="assets/images/models/model_03.jpg" alt="Studio Fashion Shot" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Studio Fashion Shot</div>
-                <div class="photo-model">by @isabella_verified ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_04', '€2.00')">
-            <img src="assets/images/models/model_04.jpg" alt="Glamour Portrait" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Glamour Portrait</div>
-                <div class="photo-model">by @mia_beauty ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_05', '€2.00')">
-            <img src="assets/images/models/model_05.jpg" alt="Artistic Beauty Photo" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Artistic Beauty Photo</div>
-                <div class="photo-model">by @luna_artist ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_06', '€2.00')">
-            <img src="assets/images/models/model_06.jpg" alt="Professional Headshot" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Professional Headshot</div>
-                <div class="photo-model">by @aria_model ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('model_07', '€2.00')">
-            <img src="assets/images/models/model_07.jpg" alt="Elegant Model Shot" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Elegant Model Shot</div>
-                <div class="photo-model">by @zoe_verified ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Gallery Photos -->
-        <div class="photo-card" onclick="buyPhoto('gallery_00', '€2.00')">
-            <img src="assets/images/gallery/gallery_00.jpg" alt="Glossy Red Lips" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Glossy Red Lips</div>
-                <div class="photo-model">by @ruby_lips ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_01', '€2.00')">
-            <img src="assets/images/gallery/gallery_01.jpg" alt="Natural Pink Lips" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Natural Pink Lips</div>
-                <div class="photo-model">by @rose_natural ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_02', '€2.00')">
-            <img src="assets/images/gallery/gallery_02.jpg" alt="Bold Lipstick Look" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Bold Lipstick Look</div>
-                <div class="photo-model">by @scarlet_bold ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_03', '€2.00')">
-            <img src="assets/images/gallery/gallery_03.jpg" alt="Artistic Beauty Shot" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Artistic Beauty Shot</div>
-                <div class="photo-model">by @pearl_artistic ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_04', '€2.00')">
-            <img src="assets/images/gallery/gallery_04.jpg" alt="Fresh Lip Look" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Fresh Lip Look</div>
-                <div class="photo-model">by @crystal_fresh ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_05', '€2.00')">
-            <img src="assets/images/gallery/gallery_05.jpg" alt="Sensual Close-up" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Sensual Close-up</div>
-                <div class="photo-model">by @velvet_lips ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_06', '€2.00')">
-            <img src="assets/images/gallery/gallery_06.jpg" alt="Classic Red Lips" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Classic Red Lips</div>
-                <div class="photo-model">by @cherry_classic ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="photo-card" onclick="buyPhoto('gallery_07', '€2.00')">
-            <img src="assets/images/gallery/gallery_07.jpg" alt="Artistic Lip Art" loading="lazy">
-            <div class="photo-info">
-                <div class="photo-title">Artistic Lip Art</div>
-                <div class="photo-model">by @amber_art ✓</div>
-                <div class="photo-footer">
-                    <div class="photo-price">€2.00</div>
-                    <button class="buy-btn">Buy Now</button>
-                </div>
-            </div>
-        </div>
+        <!-- Photos will be loaded here -->
     </section>
 
     <!-- Footer -->
@@ -486,83 +339,600 @@
     </footer>
 
     <script>
-        // Fonction d'achat
-        function buyPhoto(photoId, price) {
-            alert(`🛒 Purchase Initiated!\n\nPhoto: ${photoId}\nPrice: ${price}\n\nRedirecting to secure payment...`);
-            
-            // Simulation d'achat
-            setTimeout(() => {
-                if (confirm(`Confirm purchase of ${photoId} for ${price}?`)) {
-                    alert(`✅ Purchase successful!\n\nDownload link sent to your email.\nThank you for choosing Lips Finder!`);
-                }
-            }, 500);
-        }
+        // Variables globales
+        let allPhotos = [];
+        let currentUser = null;
+        let userFavorites = [];
 
-        // Animation au scroll
-        function animateOnScroll() {
-            const cards = document.querySelectorAll('.photo-card');
-            
-            cards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                const cardBottom = card.getBoundingClientRect().bottom;
-                
-                if (cardTop < window.innerHeight && cardBottom > 0) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }
-            });
-        }
+        // Photos locales (données de test)
+        const localPhotos = [
+            {
+                id: "photo_1",
+                title: "Glossy Red Lips",
+                price: 2.00,
+                category: "glossy",
+                tags: ["red", "glossy", "professional"],
+                image_url: "assets/images/gallery/gallery_00.jpg",
+                users: { username: "ruby_lips", display_name: "Ruby Lips" },
+                description: "Beautiful glossy red lips photograph",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_2", 
+                title: "Natural Pink Lips",
+                price: 2.00,
+                category: "natural",
+                tags: ["natural", "pink", "soft"],
+                image_url: "assets/images/gallery/gallery_01.jpg",
+                users: { username: "rose_natural", display_name: "Rose Natural" },
+                description: "Natural pink lips in soft lighting",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_3",
+                title: "Bold Lipstick Look", 
+                price: 2.00,
+                category: "artistic",
+                tags: ["bold", "artistic", "dramatic"],
+                image_url: "assets/images/gallery/gallery_02.jpg",
+                users: { username: "scarlet_bold", display_name: "Scarlet Bold" },
+                description: "Dramatic bold lipstick photography",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_4",
+                title: "Professional Portrait",
+                price: 2.00,
+                category: "professional",
+                tags: ["professional", "portrait", "elegant"],
+                image_url: "assets/images/models/model_00.jpg",
+                users: { username: "sophia_verified", display_name: "Sophia Verified" },
+                description: "Professional portrait with elegant lips",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_5",
+                title: "Elegant Beauty Shot",
+                price: 2.00,
+                category: "natural",
+                tags: ["elegant", "beauty", "natural"],
+                image_url: "assets/images/models/model_01.jpg",
+                users: { username: "emma_lips", display_name: "Emma Lips" },
+                description: "Elegant natural beauty photography",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_6",
+                title: "Natural Beauty Portrait",
+                price: 2.00,
+                category: "natural",
+                tags: ["natural", "beauty", "soft"],
+                image_url: "assets/images/models/model_02.jpg",
+                users: { username: "olivia_model", display_name: "Olivia Model" },
+                description: "Natural beauty portrait with soft lighting",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_7",
+                title: "Artistic Lips",
+                price: 2.00,
+                category: "artistic",
+                tags: ["artistic", "creative", "unique"],
+                image_url: "assets/images/gallery/gallery_08.jpg",
+                users: { username: "art_lips", display_name: "Art Lips" },
+                description: "Creative artistic lip photography",
+                created_at: new Date().toISOString()
+            },
+            {
+                id: "photo_8",
+                title: "Fresh Lips",
+                price: 2.00,
+                category: "natural",
+                tags: ["fresh", "natural", "clean"],
+                image_url: "assets/images/gallery/gallery_09.jpg",
+                users: { username: "fresh_beauty", display_name: "Fresh Beauty" },
+                description: "Fresh natural lips with clean aesthetic",
+                created_at: new Date().toISOString()
+            }
+        ];
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Mettre à jour le nombre de photos
-            const totalPhotos = document.querySelectorAll('.photo-card').length;
-            document.getElementById('total-photos').textContent = totalPhotos;
+            console.log('🚀 Page chargée, initialisation...');
             
-            // Animation au scroll
-            window.addEventListener('scroll', animateOnScroll);
-            animateOnScroll(); // Animation initiale
+            // Charger les photos immédiatement
+            loadPhotos();
             
-            // Filtres (simulation)
-            document.getElementById('category').addEventListener('change', function() {
-                console.log('Filter by category:', this.value);
-            });
-
-            document.getElementById('price').addEventListener('change', function() {
-                console.log('Filter by price:', this.value);
-            });
-
-            document.getElementById('sort').addEventListener('change', function() {
-                console.log('Sort by:', this.value);
-            });
+            // Configurer les filtres
+            setupFilters();
+            
+            // Simuler un utilisateur connecté pour les tests
+            currentUser = { username: "demo_user", email: "demo@test.com" };
+            
+            console.log('✅ Initialisation terminée');
         });
-    </script>
 
-        // Fonction d'achat
-        function buyPhoto(photoId, price) {
-            alert(`🛒 Purchase Initiated!\n\nPhoto: ${photoId}\nPrice: ${price}\n\nRedirecting to secure payment...`);
-            
-            // Simulation d'achat
-            setTimeout(() => {
-                if (confirm(`Confirm purchase of ${photoId} for ${price}?`)) {
-                    alert(`✅ Purchase successful!\n\nDownload link sent to your email.\nThank you for choosing Lips Finder!`);
+        // Charger les photos
+        // REMPLACEZ la fonction loadPhotos() dans browse.html par celle-ci
+
+        async function loadPhotos() {
+            try {
+                // Utiliser vos 25 vraies images du dossier gallery
+                const localPhotos = [
+                    {
+                        id: "photo_1",
+                        title: "Glossy Red Lips #1",
+                        price: 2.0,
+                        category: "glossy",
+                        tags: ["red", "glossy", "professional"],
+                        url: "assets/images/gallery/gallery_01.jpg",
+                        thumbnail: "assets/images/gallery/gallery_01.jpg"
+                    },
+                    {
+                        id: "photo_2",
+                        title: "Natural Pink Lips #2",
+                        price: 2.0,
+                        category: "natural",
+                        tags: ["pink", "natural", "soft"],
+                        url: "assets/images/gallery/gallery_02.jpg",
+                        thumbnail: "assets/images/gallery/gallery_02.jpg"
+                    },
+                    {
+                        id: "photo_3",
+                        title: "Bold Red Lips #3",
+                        price: 2.0,
+                        category: "bold",
+                        tags: ["red", "bold", "matte"],
+                        url: "assets/images/gallery/gallery_03.jpg",
+                        thumbnail: "assets/images/gallery/gallery_03.jpg"
+                    },
+                    {
+                        id: "photo_4",
+                        title: "Nude Lips #4",
+                        price: 2.0,
+                        category: "nude",
+                        tags: ["nude", "neutral", "everyday"],
+                        url: "assets/images/gallery/gallery_04.jpg",
+                        thumbnail: "assets/images/gallery/gallery_04.jpg"
+                    },
+                    {
+                        id: "photo_5",
+                        title: "Coral Lips #5",
+                        price: 2.0,
+                        category: "coral",
+                        tags: ["coral", "summer", "vibrant"],
+                        url: "assets/images/gallery/gallery_05.jpg",
+                        thumbnail: "assets/images/gallery/gallery_05.jpg"
+                    },
+                    {
+                        id: "photo_6",
+                        title: "Deep Berry #6",
+                        price: 2.0,
+                        category: "berry",
+                        tags: ["berry", "dark", "evening"],
+                        url: "assets/images/gallery/gallery_06.jpg",
+                        thumbnail: "assets/images/gallery/gallery_06.jpg"
+                    },
+                    {
+                        id: "photo_7",
+                        title: "Rose Gold #7",
+                        price: 2.0,
+                        category: "metallic",
+                        tags: ["rose", "gold", "metallic"],
+                        url: "assets/images/gallery/gallery_07.jpg",
+                        thumbnail: "assets/images/gallery/gallery_07.jpg"
+                    },
+                    {
+                        id: "photo_8",
+                        title: "Classic Red #8",
+                        price: 2.0,
+                        category: "classic",
+                        tags: ["red", "classic", "timeless"],
+                        url: "assets/images/gallery/gallery_08.jpg",
+                        thumbnail: "assets/images/gallery/gallery_08.jpg"
+                    },
+                    {
+                        id: "photo_9",
+                        title: "Soft Pink #9",
+                        price: 2.0,
+                        category: "pink",
+                        tags: ["pink", "soft", "romantic"],
+                        url: "assets/images/gallery/gallery_09.jpg",
+                        thumbnail: "assets/images/gallery/gallery_09.jpg"
+                    },
+                    {
+                        id: "photo_10",
+                        title: "Burgundy Glam #10",
+                        price: 2.0,
+                        category: "burgundy",
+                        tags: ["burgundy", "glam", "sophisticated"],
+                        url: "assets/images/gallery/gallery_10.jpg",
+                        thumbnail: "assets/images/gallery/gallery_10.jpg"
+                    },
+                    {
+                        id: "photo_11",
+                        title: "Peach Perfection #11",
+                        price: 2.0,
+                        category: "peach",
+                        tags: ["peach", "fresh", "natural"],
+                        url: "assets/images/gallery/gallery_11.jpg",
+                        thumbnail: "assets/images/gallery/gallery_11.jpg"
+                    },
+                    {
+                        id: "photo_12",
+                        title: "Crimson Kiss #12",
+                        price: 2.0,
+                        category: "red",
+                        tags: ["crimson", "intense", "dramatic"],
+                        url: "assets/images/gallery/gallery_12.jpg",
+                        thumbnail: "assets/images/gallery/gallery_12.jpg"
+                    },
+                    {
+                        id: "photo_13",
+                        title: "Mauve Magic #13",
+                        price: 2.0,
+                        category: "mauve",
+                        tags: ["mauve", "trendy", "modern"],
+                        url: "assets/images/gallery/gallery_13.jpg",
+                        thumbnail: "assets/images/gallery/gallery_13.jpg"
+                    },
+                    {
+                        id: "photo_14",
+                        title: "Cherry Bomb #14",
+                        price: 2.0,
+                        category: "cherry",
+                        tags: ["cherry", "bold", "statement"],
+                        url: "assets/images/gallery/gallery_14.jpg",
+                        thumbnail: "assets/images/gallery/gallery_14.jpg"
+                    },
+                    {
+                        id: "photo_15",
+                        title: "Plum Elegance #15",
+                        price: 2.0,
+                        category: "plum",
+                        tags: ["plum", "elegant", "rich"],
+                        url: "assets/images/gallery/gallery_15.jpg",
+                        thumbnail: "assets/images/gallery/gallery_15.jpg"
+                    },
+                    {
+                        id: "photo_16",
+                        title: "Honey Gloss #16",
+                        price: 2.0,
+                        category: "honey",
+                        tags: ["honey", "gloss", "sweet"],
+                        url: "assets/images/gallery/gallery_16.jpg",
+                        thumbnail: "assets/images/gallery/gallery_16.jpg"
+                    },
+                    {
+                        id: "photo_17",
+                        title: "Wine Stain #17",
+                        price: 2.0,
+                        category: "wine",
+                        tags: ["wine", "stain", "luxurious"],
+                        url: "assets/images/gallery/gallery_17.jpg",
+                        thumbnail: "assets/images/gallery/gallery_17.jpg"
+                    },
+                    {
+                        id: "photo_18",
+                        title: "Dusty Rose #18",
+                        price: 2.0,
+                        category: "dusty",
+                        tags: ["dusty", "rose", "vintage"],
+                        url: "assets/images/gallery/gallery_18.jpg",
+                        thumbnail: "assets/images/gallery/gallery_18.jpg"
+                    },
+                    {
+                        id: "photo_19",
+                        title: "Tangerine Dream #19",
+                        price: 2.0,
+                        category: "orange",
+                        tags: ["tangerine", "bright", "energetic"],
+                        url: "assets/images/gallery/gallery_19.jpg",
+                        thumbnail: "assets/images/gallery/gallery_19.jpg"
+                    },
+                    {
+                        id: "photo_20",
+                        title: "Midnight Plum #20",
+                        price: 2.0,
+                        category: "dark",
+                        tags: ["midnight", "dark", "mysterious"],
+                        url: "assets/images/gallery/gallery_20.jpg",
+                        thumbnail: "assets/images/gallery/gallery_20.jpg"
+                    },
+                    {
+                        id: "photo_21",
+                        title: "Strawberry Kiss #21",
+                        price: 2.0,
+                        category: "strawberry",
+                        tags: ["strawberry", "sweet", "playful"],
+                        url: "assets/images/gallery/gallery_21.jpg",
+                        thumbnail: "assets/images/gallery/gallery_21.jpg"
+                    },
+                    {
+                        id: "photo_22",
+                        title: "Copper Glow #22",
+                        price: 2.0,
+                        category: "copper",
+                        tags: ["copper", "metallic", "warm"],
+                        url: "assets/images/gallery/gallery_22.jpg",
+                        thumbnail: "assets/images/gallery/gallery_22.jpg"
+                    },
+                    {
+                        id: "photo_23",
+                        title: "Fuchsia Fire #23",
+                        price: 2.0,
+                        category: "fuchsia",
+                        tags: ["fuchsia", "electric", "bold"],
+                        url: "assets/images/gallery/gallery_23.jpg",
+                        thumbnail: "assets/images/gallery/gallery_23.jpg"
+                    },
+                    {
+                        id: "photo_24",
+                        title: "Caramel Dreams #24",
+                        price: 2.0,
+                        category: "caramel",
+                        tags: ["caramel", "warm", "cozy"],
+                        url: "assets/images/gallery/gallery_24.jpg",
+                        thumbnail: "assets/images/gallery/gallery_24.jpg"
+                    },
+                    {
+                        id: "photo_25",
+                        title: "Velvet Noir #25",
+                        price: 2.0,
+                        category: "black",
+                        tags: ["black", "velvet", "gothic"],
+                        url: "assets/images/gallery/gallery_25.jpg",
+                        thumbnail: "assets/images/gallery/gallery_25.jpg"
+                    }
+                ];
+
+                // Mettre à jour l'affichage
+                displayPhotos(localPhotos);
+                updateStats(localPhotos.length);
+                
+                console.log(`✅ ${localPhotos.length} photos chargées avec succès`);
+                return localPhotos;
+                
+            } catch (error) {
+                console.error('❌ Erreur lors du chargement des photos:', error);
+                
+                // En cas d'erreur, afficher un message
+                const container = document.getElementById('photosContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="error-message">
+                            <h3>Erreur de chargement</h3>
+                            <p>Impossible de charger les photos. Veuillez réessayer.</p>
+                            <button onclick="loadPhotos()" class="retry-btn">Réessayer</button>
+                        </div>
+                    `;
                 }
-            }, 500);
+                return [];
+            }
+        }
+    
+        // Afficher les photos
+        function displayPhotos(photos) {
+            const container = document.getElementById('photos-container');
+            
+            if (!container) {
+                console.error('❌ Container photos-container non trouvé');
+                return;
+            }
+            
+            if (photos.length === 0) {
+                container.innerHTML = '<div class="error">Aucune photo trouvée</div>';
+                return;
+            }
+
+            console.log(`📷 Affichage de ${photos.length} photos`);
+            container.innerHTML = photos.map(photo => createPhotoCard(photo)).join('');
         }
 
-        // Animation au scroll
-        function animateOnScroll() {
-            const cards = document.querySelectorAll('.photo-card');
+        // Créer une carte photo
+        function createPhotoCard(photo) {
+            const isFavorite = userFavorites.includes(photo.id);
+            const sellerName = photo.users?.username || photo.users?.display_name || 'Modèle';
             
-            cards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                const cardBottom = card.getBoundingClientRect().bottom;
+            return `
+                <div class="photo-card">
+                    ${currentUser ? `
+                        <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${photo.id}', this)">
+                            ${isFavorite ? '❤️' : '🤍'}
+                        </button>
+                    ` : ''}
+                    <img src="${photo.image_url}" alt="${photo.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x250/e91e63/ffffff?text=Photo'">
+                    <div class="photo-info">
+                        <div class="photo-title">${photo.title}</div>
+                        <div class="photo-model">by @${sellerName} ✓</div>
+                        <div class="photo-footer">
+                            <div class="photo-price">€${photo.price.toFixed(2)}</div>
+                            <button class="buy-btn" onclick="buyPhoto('${photo.id}', ${photo.price})">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fonction d'achat avec API
+        // REMPLACEZ la fonction buyPhoto() dans votre browse.html par celle-ci
+
+        async function buyPhoto(photoId, price) {
+            console.log('🛒 Tentative d\'achat:', photoId, '€' + price);
+            
+            // Vérifier si utilisateur connecté
+            if (!currentUser) {
+                alert('❌ Vous devez être connecté pour acheter une photo');
+                window.location.href = 'login-simple.html';
+                return;
+            }
+
+            // Confirmer l'achat
+            const confirmPurchase = confirm(`💳 Confirmer l'achat de cette photo pour €${price.toFixed(2)} ?`);
+            if (!confirmPurchase) return;
+
+            // Changer le bouton en "Processing..."
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Processing...';
+            button.disabled = true;
+
+            try {
+                console.log('🔄 Création de l\'intention de paiement...');
                 
-                if (cardTop < window.innerHeight && cardBottom > 0) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
+                // Étape 1: Créer l'intention de paiement via votre API
+                // CORRECTION: Envoyer les données en tant que paramètres URL au lieu de JSON
+                const params = new URLSearchParams({
+                    photo_id: photoId,
+                    amount: price
+                });
+
+                const response = await fetch(`http://localhost:8000/api/payments/create-payment-intent?${params}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur API: ${response.status}`);
                 }
-            });
+
+                const data = await response.json();
+                console.log('✅ Intention de paiement créée:', data);
+
+                if (data.success) {
+                    // Étape 2: Simuler le paiement réussi
+                    console.log('💳 Simulation du paiement...');
+                    
+                    // Attendre 2 secondes pour simuler le paiement
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Étape 3: Confirmer l'achat
+                    const confirmParams = new URLSearchParams({
+                        payment_intent_id: data.payment_intent_id,
+                        photo_id: photoId
+                    });
+
+                    const confirmResponse = await fetch(`http://localhost:8000/api/payments/confirm-purchase?${confirmParams}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        }
+                    });
+
+                    const confirmData = await confirmResponse.json();
+                    console.log('🎉 Confirmation:', confirmData);
+
+                    if (confirmData.success) {
+                        // Succès !
+                        alert(`🎉 ACHAT RÉUSSI !\n\n💰 Photo achetée pour €${price.toFixed(2)}\n🔗 Lien de téléchargement: ${confirmData.download_url}\n\n✅ Ceci est un VRAI achat avec votre API !`);
+                    } else {
+                        throw new Error(confirmData.message || 'Erreur lors de la confirmation');
+                    }
+                } else {
+                    throw new Error(data.message || 'Erreur lors de la création du paiement');
+                }
+
+            } catch (error) {
+                console.error('❌ Erreur achat:', error);
+                alert(`❌ ERREUR lors de l'achat: ${error.message}\n\n🔧 Vérifiez que votre serveur Python fonctionne sur http://localhost:8000`);
+            } finally {
+                // Remettre le bouton normal
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+        // Gérer les favoris
+        function toggleFavorite(photoId, button) {
+            if (!currentUser) {
+                alert('Vous devez être connecté pour ajouter aux favoris');
+                return;
+            }
+
+            const isFavorite = button.classList.contains('active');
+            
+            button.classList.toggle('active');
+            button.textContent = isFavorite ? '🤍' : '❤️';
+            
+            // Mettre à jour la liste locale
+            if (isFavorite) {
+                userFavorites = userFavorites.filter(id => id !== photoId);
+                console.log('💔 Retiré des favoris:', photoId);
+            } else {
+                userFavorites.push(photoId);
+                console.log('❤️ Ajouté aux favoris:', photoId);
+            }
+        }
+
+        // Configurer les filtres
+        function setupFilters() {
+            document.getElementById('category').addEventListener('change', applyFilters);
+            document.getElementById('price').addEventListener('change', applyFilters);
+            document.getElementById('sort').addEventListener('change', applyFilters);
+            document.getElementById('search').addEventListener('input', applyFilters);
+        }
+
+        // Appliquer les filtres
+        function applyFilters() {
+            const category = document.getElementById('category').value;
+            const price = document.getElementById('price').value;
+            const sort = document.getElementById('sort').value;
+            const search = document.getElementById('search').value.toLowerCase();
+
+            let filteredPhotos = [...allPhotos];
+
+            // Filtrer par catégorie
+            if (category) {
+                filteredPhotos = filteredPhotos.filter(photo => 
+                    photo.category === category || 
+                    (photo.tags && photo.tags.includes(category))
+                );
+            }
+
+            // Filtrer par prix
+            if (price) {
+                filteredPhotos = filteredPhotos.filter(photo => photo.price <= parseFloat(price));
+            }
+
+            // Filtrer par recherche
+            if (search) {
+                filteredPhotos = filteredPhotos.filter(photo => 
+                    photo.title.toLowerCase().includes(search) ||
+                    photo.description.toLowerCase().includes(search) ||
+                    (photo.users?.username || '').toLowerCase().includes(search)
+                );
+            }
+
+            // Trier
+            switch (sort) {
+                case 'popular':
+                    filteredPhotos.sort((a, b) => (b.views_count || 0) - (a.views_count || 0));
+                    break;
+                case 'price-low':
+                    filteredPhotos.sort((a, b) => a.price - b.price);
+                    break;
+                case 'newest':
+                default:
+                    filteredPhotos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    break;
+            }
+
+            console.log(`🔍 Filtres appliqués: ${filteredPhotos.length} photos affichées`);
+            displayPhotos(filteredPhotos);
+        }
+
+        // Mettre à jour les statistiques
+        function updateStats() {
+            document.getElementById('total-photos').textContent = allPhotos.length;
+        }
+
+        // Afficher une erreur
+        function showError(message) {
+            const container = document.getElementById('photos-container');
+            container.innerHTML = `<div class="error">${message}</div>`;
         }
     </script>
 </body>
