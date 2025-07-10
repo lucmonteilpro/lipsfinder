@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Lips Finder</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💋</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .back-home {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.7rem 1.5rem;
+            background: #e91e63;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #c2185b;
+            transform: translateY(-2px);
+        }
+        
+        .faq-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .faq-section h2 {
+            background: #f8f9fa;
+            color: #e91e63;
+            padding: 1.5rem 2rem;
+            margin: 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e91e63;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            background: none;
+            border: none;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question:hover {
+            background: #f8f9fa;
+        }
+        
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: #e91e63;
+            transition: transform 0.3s;
+        }
+        
+        .faq-question.active::after {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            padding: 0 2rem 1.5rem;
+            color: #666;
+            line-height: 1.8;
+            display: none;
+        }
+        
+        .faq-answer.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .faq-answer ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        .faq-answer li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight {
+            background: #fff3e0;
+            padding: 1rem;
+            border-left: 4px solid #e91e63;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 15px;
+            margin: 3rem 0;
+        }
+        
+        .cta-section h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .cta-section p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #e91e63;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #e91e63;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                margin: 1rem auto;
+                padding: 0 1rem;
+            }
+            
+            .faq-question,
+            .faq-answer {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💋 Frequently Asked Questions</h1>
+        <p>Everything you need to know about Lips Finder</p>
+    </div>
+
+    <div class="container">
+        <a href="index.html" class="back-home">← Back to Home</a>
+
+        <!-- General Questions -->
+        <div class="faq-section">
+            <h2>🌟 General Questions</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What is Lips Finder?
+                </button>
+                <div class="faq-answer">
+                    <p>Lips Finder is the world's first marketplace dedicated to buying and selling lip photography. We connect models who want to sell their lip photos with buyers who appreciate this unique form of photography. Think of it as the "Etsy for lip photos" - a safe, secure platform where creativity meets commerce.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Is Lips Finder safe and legitimate?
+                </button>
+                <div class="faq-answer">
+                    <p>Absolutely! Lips Finder prioritizes user safety and security:</p>
+                    <ul>
+                        <li>Bank-level encryption for all transactions</li>
+                        <li>Anonymous profiles to protect your identity</li>
+                        <li>Secure payments via Stripe</li>
+                        <li>24/7 fraud monitoring</li>
+                        <li>GDPR compliant data protection</li>
+                        <li>Age verification for all users (18+)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How does Lips Finder work?
+                </button>
+                <div class="faq-answer">
+                    <p>It's simple:</p>
+                    <ul>
+                        <li><strong>For Sellers:</strong> Create an account, upload your lip photos, set your prices, and start earning when buyers purchase your photos</li>
+                        <li><strong>For Buyers:</strong> Browse thousands of lip photos, purchase the ones you love, and download them instantly</li>
+                    </ul>
+                    <p>We handle all payments, security, and delivery automatically.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Who can use Lips Finder?
+                </button>
+                <div class="faq-answer">
+                    <p>Lips Finder is open to anyone 18 years or older. Whether you're:</p>
+                    <ul>
+                        <li>A professional model looking to monetize your photos</li>
+                        <li>Someone who loves lip photography and makeup</li>
+                        <li>A photography enthusiast</li>
+                        <li>An artist looking for inspiration</li>
+                    </ul>
+                    <p>You can join our community as either a seller, buyer, or both!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- For Sellers -->
+        <div class="faq-section">
+            <h2>💰 For Sellers</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How much money can I make?
+                </button>
+                <div class="faq-answer">
+                    <p>Earnings vary based on your activity and photo quality, but here are some examples:</p>
+                    <ul>
+                        <li><strong>Casual sellers:</strong> $50-200/month</li>
+                        <li><strong>Active sellers:</strong> $200-500/month</li>
+                        <li><strong>Top performers:</strong> $500-2000+/month</li>
+                    </ul>
+                    <div class="highlight">
+                        <strong>You keep 80% of every sale!</strong> We only take a 20% platform fee, which is among the lowest in the industry.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What kind of photos sell best?
+                </button>
+                <div class="faq-answer">
+                    <p>Popular photo categories include:</p>
+                    <ul>
+                        <li>High-quality close-ups with good lighting</li>
+                        <li>Different lip colors and textures (matte, glossy, metallic)</li>
+                        <li>Artistic shots with creative angles</li>
+                        <li>Natural vs. dramatic makeup looks</li>
+                        <li>Seasonal themes (holiday colors, etc.)</li>
+                    </ul>
+                    <p>Quality is key - well-lit, clear photos always perform better!</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do I get paid?
+                </button>
+                <div class="faq-answer">
+                    <p>We offer multiple payout options:</p>
+                    <ul>
+                        <li>Direct bank transfer (most popular)</li>
+                        <li>PayPal</li>
+                        <li>Stripe direct deposit</li>
+                    </ul>
+                    <p>Payments are processed weekly, and you can request a payout anytime your balance reaches $20 or more.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Do I own my photos after selling them?
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! You retain all rights to your photos. When someone purchases your photo, they're buying a license to use it for personal purposes only. You can:</p>
+                    <ul>
+                        <li>Continue selling the same photo to multiple buyers</li>
+                        <li>Use your photos elsewhere</li>
+                        <li>Remove photos from sale at any time</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- For Buyers -->
+        <div class="faq-section">
+            <h2>🛒 For Buyers</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How much do photos cost?
+                </button>
+                <div class="faq-answer">
+                    <p>Photo prices are set by individual sellers, but typically range:</p>
+                    <ul>
+                        <li><strong>Standard photos:</strong> €2-10</li>
+                        <li><strong>Premium/exclusive content:</strong> €10-50</li>
+                        <li><strong>Custom requests:</strong> €20-100+</li>
+                    </ul>
+                    <p>Many sellers offer bundle deals and discounts for multiple purchases!</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What can I do with purchased photos?
+                </button>
+                <div class="faq-answer">
+                    <p>Purchased photos are for personal use only. You can:</p>
+                    <ul>
+                        <li>Save them to your personal collection</li>
+                        <li>Use as inspiration for artwork/photography</li>
+                        <li>Enjoy them privately</li>
+                    </ul>
+                    <p><strong>You cannot:</strong> Resell, distribute, share publicly, or use commercially without explicit permission from the seller.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do I download my purchases?
+                </button>
+                <div class="faq-answer">
+                    <p>After purchasing a photo:</p>
+                    <ul>
+                        <li>You'll receive an instant download link</li>
+                        <li>Photos are also saved to your account dashboard</li>
+                        <li>You can re-download anytime from your purchase history</li>
+                        <li>High-resolution files are provided</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Safety & Privacy -->
+        <div class="faq-section">
+            <h2>🔒 Safety & Privacy</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do you protect my privacy?
+                </button>
+                <div class="faq-answer">
+                    <p>Your privacy is our top priority:</p>
+                    <ul>
+                        <li>All profiles can be completely anonymous</li>
+                        <li>No real names required - use any username</li>
+                        <li>Payment information is encrypted and never shared</li>
+                        <li>Optional profile photos and bios</li>
+                        <li>Block/report features for unwanted interactions</li>
+                        <li>GDPR-compliant data handling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What if someone misuses my photos?
+                </button>
+                <div class="faq-answer">
+                    <p>We have multiple protections in place:</p>
+                    <ul>
+                        <li>Watermarking options for preview images</li>
+                        <li>DMCA takedown support</li>
+                        <li>User reporting system</li>
+                        <li>Legal support for copyright violations</li>
+                        <li>Account suspension for violators</li>
+                    </ul>
+                    <p>If you discover misuse, contact our support team immediately for assistance.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do you verify users are 18+?
+                </button>
+                <div class="faq-answer">
+                    <p>Age verification is mandatory for all users:</p>
+                    <ul>
+                        <li>Government-issued ID verification</li>
+                        <li>Automated age detection systems</li>
+                        <li>Manual review for questionable accounts</li>
+                        <li>Regular compliance audits</li>
+                    </ul>
+                    <p>We take age verification seriously to maintain a safe, legal platform.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Support -->
+        <div class="faq-section">
+            <h2>🛠️ Technical Support</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What photo formats do you accept?
+                </button>
+                <div class="faq-answer">
+                    <p>We accept the following formats:</p>
+                    <ul>
+                        <li><strong>Preferred:</strong> JPG, PNG</li>
+                        <li><strong>Also accepted:</strong> HEIC, WebP</li>
+                        <li><strong>Maximum size:</strong> 50MB per photo</li>
+                        <li><strong>Minimum resolution:</strong> 1080x1080 pixels</li>
+                        <li><strong>Recommended:</strong> 4K resolution for best quality</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    I'm having trouble uploading photos. What should I do?
+                </button>
+                <div class="faq-answer">
+                    <p>Try these troubleshooting steps:</p>
+                    <ul>
+                        <li>Check your internet connection</li>
+                        <li>Ensure photo is under 50MB</li>
+                        <li>Try a different browser (Chrome, Firefox, Safari)</li>
+                        <li>Clear your browser cache</li>
+                        <li>Disable browser extensions temporarily</li>
+                    </ul>
+                    <p>If problems persist, contact our support team with details about your device and browser.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How can I contact support?
+                </button>
+                <div class="faq-answer">
+                    <p>We're here to help 24/7:</p>
+                    <ul>
+                        <li><strong>Email:</strong> support@lipsfinder.com</li>
+                        <li><strong>Live chat:</strong> Available in your dashboard</li>
+                        <li><strong>Help center:</strong> Comprehensive guides and tutorials</li>
+                        <li><strong>Response time:</strong> Usually within 2-4 hours</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of users already earning and enjoying on Lips Finder!</p>
+            <div class="cta-buttons">
+                <a href="login-simple.html" class="btn btn-primary">Sign Up Now</a>
+                <a href="browse.html" class="btn btn-secondary">Browse Photos</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const isActive = answer.classList.contains('active');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-answer').forEach(ans => {
+                ans.classList.remove('active');
+            });
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+            });
+            
+            // Toggle current FAQ
+            if (!isActive) {
+                answer.classList.add('active');
+                element.classList.add('active');
+            }
+        }
+
+        // Close FAQ when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.faq-item')) {
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    ans.classList.remove('active');
+                });
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
