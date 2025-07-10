@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard - Lips Finder</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💋</text></svg>">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+        .dashboard-header {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            padding: 6rem 2rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .user-info h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 120px;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--bg-light);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .section-header h2 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .section-content.hidden {
+            display: none;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .photo-info {
+            padding: 1.5rem;
+        }
+
+        .photo-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .photo-model {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .photo-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn-buy {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-buy:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .purchased-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .purchased-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .purchase-info {
+            flex: 1;
+        }
+
+        .purchase-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-download {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-view {
+            background: #007bff;
+            color: white;
+        }
+
+        .favorite-heart {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .favorite-heart:hover,
+        .favorite-heart.favorited {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .search-bar {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: var(--bg-light);
+            border: 2px solid #e1e5e9;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .filter-tag:hover,
+        .filter-tag.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .wallet-card {
+            background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .wallet-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="index.html" style="color: var(--primary-color); font-size: 1.5rem; text-decoration: none; font-weight: bold;">💋 Lips Finder</a>
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="showSection('browse')">Browse</div>
+                <div class="nav-item" onclick="showSection('purchases')">My Purchases</div>
+                <div class="nav-item" onclick="showSection('favorites')">Favorites</div>
+                <div class="nav-item" onclick="showSection('wallet')">Wallet</div>
+                <div class="nav-item" onclick="showSection('profile')">Profile</div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="header-content">
+            <div class="user-info">
+                <h1>Welcome back, <span id="username">Buyer</span>! 💋</h1>
+                <p>Discover stunning lip photography from verified models</p>
+            </div>
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <h3>7</h3>
+                    <p>Purchased</p>
+                </div>
+                <div class="stat-card">
+                    <h3>€14</h3>
+                    <p>Spent</p>
+                </div>
+                <div class="stat-card">
+                    <h3>3</h3>
+                    <p>Favorites</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Browse Section -->
+        <div id="browse-section" class="section-content">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Browse New Photos</h2>
+                    <p>Discover the latest lip photography from our verified models</p>
+                </div>
+                <div class="section-content">
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="Search for lip photos, models, styles..." onkeyup="searchPhotos(this.value)">
+                    </div>
+
+                    <div class="filter-tags">
+                        <div class="filter-tag active" onclick="filterByTag('all', this)">All</div>
+                        <div class="filter-tag" onclick="filterByTag('glossy', this)">Glossy</div>
+                        <div class="filter-tag" onclick="filterByTag('natural', this)">Natural</div>
+                        <div class="filter-tag" onclick="filterByTag('red', this)">Red Lips</div>
+                        <div class="filter-tag" onclick="filterByTag('artistic', this)">Artistic</div>
+                        <div class="filter-tag" onclick="filterByTag('close-up', this)">Close-ups</div>
+                    </div>
+
+                    <div class="photo-grid" id="photoGrid">
+                        <div class="photo-card" style="position: relative;" data-tags="glossy red">
+                            <button class="favorite-heart" onclick="toggleFavorite(this)">♡</button>
+                            <img src="assets/images/gallery/gallery_00.jpg" alt="Lip Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Glossy Red Lips</div>
+                                <div class="photo-model">by @ruby_lips ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('gallery_00', '€2.00', 'Glossy Red Lips')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-card" style="position: relative;" data-tags="natural pink">
+                            <button class="favorite-heart" onclick="toggleFavorite(this)">♡</button>
+                            <img src="assets/images/gallery/gallery_01.jpg" alt="Lip Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Natural Pink Lips</div>
+                                <div class="photo-model">by @rose_natural ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('gallery_01', '€2.00', 'Natural Pink Lips')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-card" style="position: relative;" data-tags="artistic red">
+                            <button class="favorite-heart favorited" onclick="toggleFavorite(this)">♥</button>
+                            <img src="assets/images/models/model_00.jpg" alt="Lip Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Professional Portrait</div>
+                                <div class="photo-model">by @sophia_verified ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('model_00', '€2.00', 'Professional Portrait')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-card" style="position: relative;" data-tags="natural close-up">
+                            <button class="favorite-heart" onclick="toggleFavorite(this)">♡</button>
+                            <img src="assets/images/models/model_01.jpg" alt="Lip Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Elegant Beauty Shot</div>
+                                <div class="photo-model">by @emma_lips ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('model_01', '€2.00', 'Elegant Beauty Shot')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-card" style="position: relative;" data-tags="glossy artistic">
+                            <button class="favorite-heart favorited" onclick="toggleFavorite(this)">♥</button>
+                            <img src="assets/images/gallery/gallery_02.jpg" alt="Lip Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Bold Lipstick Look</div>
+                                <div class="photo-model">by @scarlet_bold ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('gallery_02', '€2.00', 'Bold Lipstick Look')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-card" style="position: relative;" data-tags="natural artistic">
+                            <button class="favorite-heart" onclick="toggleFavorite(this)">♡</button>
+                            <img src="assets/images/models/model_02.jpg" alt="Lip Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Natural Beauty Portrait</div>
+                                <div class="photo-model">by @olivia_model ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('model_02', '€2.00', 'Natural Beauty Portrait')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchases Section -->
+        <div id="purchases-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>My Purchases</h2>
+                    <p>Access and download your purchased photos</p>
+                </div>
+                <div class="section-content">
+                    <div class="purchased-item">
+                        <img src="assets/images/gallery/gallery_00.jpg" alt="Purchased Photo" onerror="this.src='https://via.placeholder.com/80x80/e91e63/ffffff?text=Photo'">
+                        <div class="purchase-info">
+                            <h4>Glossy Red Lips</h4>
+                            <p>by @ruby_lips • Purchased today</p>
+                            <p style="color: var(--primary-color); font-weight: bold;">€2.00</p>
+                        </div>
+                        <div class="purchase-actions">
+                            <button class="btn-small btn-download" onclick="downloadPhoto('gallery_00')">Download</button>
+                            <button class="btn-small btn-view" onclick="viewPhoto('gallery_00')">View</button>
+                        </div>
+                    </div>
+
+                    <div class="purchased-item">
+                        <img src="assets/images/models/model_00.jpg" alt="Purchased Photo" onerror="this.src='https://via.placeholder.com/80x80/e91e63/ffffff?text=Photo'">
+                        <div class="purchase-info">
+                            <h4>Professional Portrait</h4>
+                            <p>by @sophia_verified • Purchased yesterday</p>
+                            <p style="color: var(--primary-color); font-weight: bold;">€2.00</p>
+                        </div>
+                        <div class="purchase-actions">
+                            <button class="btn-small btn-download" onclick="downloadPhoto('model_00')">Download</button>
+                            <button class="btn-small btn-view" onclick="viewPhoto('model_00')">View</button>
+                        </div>
+                    </div>
+
+                    <div class="purchased-item">
+                        <img src="assets/images/gallery/gallery_01.jpg" alt="Purchased Photo" onerror="this.src='https://via.placeholder.com/80x80/e91e63/ffffff?text=Photo'">
+                        <div class="purchase-info">
+                            <h4>Natural Pink Lips</h4>
+                            <p>by @rose_natural • Purchased 2 days ago</p>
+                            <p style="color: var(--primary-color); font-weight: bold;">€2.00</p>
+                        </div>
+                        <div class="purchase-actions">
+                            <button class="btn-small btn-download" onclick="downloadPhoto('gallery_01')">Download</button>
+                            <button class="btn-small btn-view" onclick="viewPhoto('gallery_01')">View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorites Section -->
+        <div id="favorites-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>My Favorites</h2>
+                    <p>Photos you've saved for later</p>
+                </div>
+                <div class="section-content">
+                    <div class="photo-grid">
+                        <div class="photo-card" style="position: relative;">
+                            <button class="favorite-heart favorited" onclick="toggleFavorite(this)">♥</button>
+                            <img src="assets/images/models/model_00.jpg" alt="Favorite Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Professional Portrait</div>
+                                <div class="photo-model">by @sophia_verified ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('model_00', '€2.00', 'Professional Portrait')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-card" style="position: relative;">
+                            <button class="favorite-heart favorited" onclick="toggleFavorite(this)">♥</button>
+                            <img src="assets/images/gallery/gallery_02.jpg" alt="Favorite Photo" onerror="this.src='https://via.placeholder.com/280x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <div class="photo-title">Bold Lipstick Look</div>
+                                <div class="photo-model">by @scarlet_bold ✓</div>
+                                <div class="photo-footer">
+                                    <div class="photo-price">€2.00</div>
+                                    <button class="btn-buy" onclick="buyPhoto('gallery_02', '€2.00', 'Bold Lipstick Look')">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Section -->
+        <div id="wallet-section" class="section-content hidden">
+            <div class="wallet-card">
+                <div class="wallet-amount">€25.80</div>
+                <p>Available Balance</p>
+                <button class="btn-primary" style="margin-top: 1rem;" onclick="addFunds()">Add Funds</button>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2>Transaction History</h2>
+                    <p>Your recent purchases and payments</p>
+                </div>
+                <div class="section-content">
+                    <div style="background: #f8f9fa; border-radius: 10px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #e1e5e9; font-weight: bold; background: white;">
+                            <span>Description</span>
+                            <span>Date</span>
+                            <span>Amount</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #e1e5e9;">
+                            <span>Purchase: Glossy Red Lips</span>
+                            <span>Today</span>
+                            <span style="color: #dc3545; font-weight: bold;">-€2.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #e1e5e9;">
+                            <span>Funds Added (PayPal)</span>
+                            <span>Yesterday</span>
+                            <span style="color: #28a745; font-weight: bold;">+€20.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem;">
+                            <span>Purchase: Professional Portrait</span>
+                            <span>Yesterday</span>
+                            <span style="color: #dc3545; font-weight: bold;">-€2.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Profile Settings</h2>
+                    <p>Manage your account preferences</p>
+                </div>
+                <div class="section-content">
+                    <form onsubmit="updateProfile(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Username</label>
+                                <input type="text" id="profileUsername" value="buyer_demo" style="width: 100%; padding: 0.8rem; border: 2px solid #e1e5e9; border-radius: 8px;">
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                                <input type="email" id="profileEmail" value="buyer@demo.com" style="width: 100%; padding: 0.8rem; border: 2px solid #e1e5e9; border-radius: 8px;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Notification Preferences</label>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> Email notifications for new photos
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" checked> Weekly digest of trending photos
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox"> SMS notifications for special offers
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Vérifier l'authentification
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = sessionStorage.getItem('lipsfinderUser');
+            if (!user) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const userData = JSON.parse(user);
+            if (userData.type !== 'buyer') {
+                alert('Access denied. Buyer account required.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Mettre à jour le nom d'utilisateur
+            document.getElementById('username').textContent = userData.username;
+        });
+
+        // Navigation entre sections
+        function showSection(sectionName) {
+            // Cacher toutes les sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Afficher la section sélectionnée
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Mettre à jour la navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Acheter une photo
+        function buyPhoto(photoId, price, title) {
+            if (confirm(`Purchase "${title}" for ${price}?`)) {
+                alert(`✅ Purchase successful!\n\nPhoto: ${title}\nPrice: ${price}\n\nDownload available in "My Purchases" section.`);
+                
+                // Simulation: ajouter à la liste des achats
+                // Dans une vraie app, cela serait géré côté serveur
+            }
+        }
+
+        // Basculer favori
+        function toggleFavorite(button) {
+            if (button.classList.contains('favorited')) {
+                button.classList.remove('favorited');
+                button.innerHTML = '♡';
+                button.style.background = 'rgba(255,255,255,0.9)';
+                button.style.color = 'var(--text-dark)';
+            } else {
+                button.classList.add('favorited');
+                button.innerHTML = '♥';
+                button.style.background = 'var(--primary-color)';
+                button.style.color = 'white';
+            }
+        }
+
+        // Filtrer par tag
+        function filterByTag(tag, element) {
+            // Mettre à jour les tags actifs
+            document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+
+            // Filtrer les photos
+            const photoCards = document.querySelectorAll('.photo-card');
+            photoCards.forEach(card => {
+                if (tag === 'all' || card.dataset.tags.includes(tag)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Rechercher des photos
+        function searchPhotos(query) {
+            const photoCards = document.querySelectorAll('.photo-card');
+            const searchTerm = query.toLowerCase();
+
+            photoCards.forEach(card => {
+                const title = card.querySelector('.photo-title').textContent.toLowerCase();
+                const model = card.querySelector('.photo-model').textContent.toLowerCase();
+                const tags = card.dataset.tags || '';
+
+                if (title.includes(searchTerm) || model.includes(searchTerm) || tags.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Télécharger une photo
+        function downloadPhoto(photoId) {
+            alert(`✅ Downloading ${photoId}...\n\nHigh-resolution version will be downloaded shortly.`);
+            // Dans une vraie app, cela déclencherait le téléchargement du fichier
+        }
+
+        // Voir une photo
+        function viewPhoto(photoId) {
+            alert(`📸 Opening full-size preview of ${photoId}...`);
+            // Dans une vraie app, cela ouvrirait une lightbox avec la photo
+        }
+
+        // Ajouter des fonds
+        function addFunds() {
+            const amount = prompt('How much would you like to add to your wallet? (€)');
+            if (amount && !isNaN(amount) && amount > 0) {
+                alert(`✅ Adding €${amount} to your wallet...\n\nRedirecting to PayPal for secure payment.`);
+                // Dans une vraie app, cela redirigerait vers le processeur de paiement
+            }
+        }
+
+        // Mettre à jour le profil
+        function updateProfile(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('profileUsername').value;
+            const email = document.getElementById('profileEmail').value;
+            
+            // Simulation de sauvegarde
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert(`✅ Profile updated successfully!\n\nUsername: ${username}\nEmail: ${email}`);
+                
+                // Mettre à jour le sessionStorage
+                const user = JSON.parse(sessionStorage.getItem('lipsfinderUser'));
+                user.username = username;
+                user.email = email;
+                sessionStorage.setItem('lipsfinderUser', JSON.stringify(user));
+                
+                // Mettre à jour l'affichage
+                document.getElementById('username').textContent = username;
+                
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 1000);
+        }
+
+        // Déconnexion
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('lipsfinderUser');
+                alert('✅ Logged out successfully!');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

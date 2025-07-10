@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Lips Finder</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💋</text></svg>">
+    
+    <!-- Fix 100% zoom issue -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
+        }
+        
+        body {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #e91e63 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+            margin: 2rem;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .login-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+        }
+        
+        .login-form {
+            padding: 2rem;
+        }
+        
+        .form-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            color: #e91e63;
+            border-bottom: 2px solid #e91e63;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #e91e63;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(233, 30, 99, 0.3);
+        }
+        
+        .demo-accounts {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .demo-accounts h3 {
+            color: #e91e63;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .demo-account {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .demo-account:last-child {
+            border-bottom: none;
+        }
+        
+        .demo-button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s;
+        }
+        
+        .demo-button:hover {
+            background: #c2185b;
+        }
+        
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: white;
+            color: #e91e63;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .back-home:hover {
+            background: #e91e63;
+            color: white;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .error-message {
+            background: #f44336;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 1rem;
+            }
+            
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .back-home {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-home">← Back to Home</a>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <h1>💋 Welcome Back</h1>
+            <p>Access your Lips Finder account</p>
+        </div>
+        
+        <div class="login-form">
+            <div class="form-tabs">
+                <button class="tab-button active" onclick="showTab('login')">Login</button>
+                <button class="tab-button" onclick="showTab('signup')">Sign Up</button>
+            </div>
+            
+            <div id="messages"></div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                
+                <button type="submit" class="submit-button">Login</button>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signupForm" class="hidden" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" required minlength="6">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" name="confirmPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userType">Account Type</label>
+                    <select id="userType" name="userType" required>
+                        <option value="">Select account type</option>
+                        <option value="buyer">Buyer - I want to buy photos</option>
+                        <option value="seller">Seller - I want to sell photos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required minlength="3">
+                </div>
+                
+                <button type="submit" class="submit-button">Create Account</button>
+            </form>
+            
+            <!-- Demo Accounts -->
+            <div class="demo-accounts">
+                <h3>🚀 Demo Accounts (For Testing)</h3>
+                <div class="demo-account">
+                    <div>
+                        <strong>Buyer:</strong> buyer@demo.com / demo123
+                    </div>
+                    <button class="demo-button" onclick="loginDemo('buyer')">Login</button>
+                </div>
+                <div class="demo-account">
+                    <div>
+                        <strong>Seller:</strong> seller@demo.com / demo123
+                    </div>
+                    <button class="demo-button" onclick="loginDemo('seller')">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const demoAccounts = {
+            buyer: {
+                email: 'buyer@demo.com',
+                password: 'demo123',
+                userType: 'buyer',
+                username: 'demo_buyer'
+            },
+            seller: {
+                email: 'seller@demo.com',
+                password: 'demo123',
+                userType: 'seller',
+                username: 'demo_seller'
+            }
+        };
+
+        // Fonction pour changer d'onglet
+        function showTab(tabName) {
+            // Mettre à jour les boutons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+            
+            // Afficher le bon formulaire
+            document.getElementById('loginForm').classList.toggle('hidden', tabName !== 'login');
+            document.getElementById('signupForm').classList.toggle('hidden', tabName !== 'signup');
+            
+            // Nettoyer les messages
+            document.getElementById('messages').innerHTML = '';
+        }
+
+        // Fonction de connexion
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Vérifier les comptes demo
+            const demoAccount = Object.values(demoAccounts).find(account => 
+                account.email === email && account.password === password
+            );
+            
+            if (demoAccount) {
+                showMessage('success', '✅ Login successful! Redirecting...');
+                
+                // Stocker les données de session
+                localStorage.setItem('user', JSON.stringify({
+                    email: demoAccount.email,
+                    userType: demoAccount.userType,
+                    username: demoAccount.username,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                // Rediriger selon le type d'utilisateur
+                setTimeout(() => {
+                    if (demoAccount.userType === 'buyer') {
+                        window.location.href = 'buyer-dashboard.html';
+                    } else {
+                        window.location.href = 'seller-dashboard.html';
+                    }
+                }, 1500);
+            } else {
+                showMessage('error', '❌ Invalid email or password');
+            }
+        }
+
+        // Fonction d'inscription
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const userType = document.getElementById('userType').value;
+            const username = document.getElementById('username').value;
+            
+            // Vérifications
+            if (password !== confirmPassword) {
+                showMessage('error', '❌ Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('error', '❌ Password must be at least 6 characters');
+                return;
+            }
+            
+            // Vérifier si l'email existe déjà
+            if (Object.values(demoAccounts).some(account => account.email === email)) {
+                showMessage('error', '❌ Email already exists');
+                return;
+            }
+            
+            // Simulation d'inscription réussie
+            showMessage('success', '✅ Account created successfully! Please login.');
+            
+            // Passer à l'onglet login
+            setTimeout(() => {
+                showTab('login');
+                document.getElementById('loginEmail').value = email;
+            }, 1500);
+        }
+
+        // Fonction de connexion demo
+        function loginDemo(type) {
+            const account = demoAccounts[type];
+            
+            // Remplir les champs
+            document.getElementById('loginEmail').value = account.email;
+            document.getElementById('loginPassword').value = account.password;
+            
+            // Afficher l'onglet login
+            showTab('login');
+            
+            // Connexion automatique
+            setTimeout(() => {
+                showMessage('success', `✅ Demo login as ${type}! Redirecting...`);
+                
+                // Stocker les données de session
+                localStorage.setItem('user', JSON.stringify({
+                    email: account.email,
+                    userType: account.userType,
+                    username: account.username,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                // Rediriger
+                setTimeout(() => {
+                    if (type === 'buyer') {
+                        window.location.href = 'buyer-dashboard.html';
+                    } else {
+                        window.location.href = 'seller-dashboard.html';
+                    }
+                }, 1500);
+            }, 500);
+        }
+
+        // Fonction pour afficher les messages
+        function showMessage(type, message) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+            
+            // Faire disparaître après 5 secondes
+            setTimeout(() => {
+                messagesDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Vérifier si l'utilisateur est déjà connecté
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('user');
+            if (user) {
+                const userData = JSON.parse(user);
+                showMessage('success', `✅ Already logged in as ${userData.username}. Redirecting...`);
+                
+                setTimeout(() => {
+                    if (userData.userType === 'buyer') {
+                        window.location.href = 'buyer-dashboard.html';
+                    } else {
+                        window.location.href = 'seller-dashboard.html';
+                    }
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

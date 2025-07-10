@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - Lips Finder</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💋</text></svg>">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+        .dashboard-header {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            padding: 6rem 2rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .user-info h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 120px;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--bg-light);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .section-header h2 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .upload-zone {
+            border: 3px dashed var(--primary-color);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            background: var(--bg-gradient-start);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-zone:hover {
+            background: var(--bg-gradient-end);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .photo-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .photo-info {
+            padding: 1rem;
+        }
+
+        .photo-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-edit {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .earnings-card {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .earnings-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-content.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="index.html" style="color: var(--primary-color); font-size: 1.5rem; text-decoration: none; font-weight: bold;">💋 Lips Finder</a>
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="showSection('overview')">Overview</div>
+                <div class="nav-item" onclick="showSection('upload')">Upload</div>
+                <div class="nav-item" onclick="showSection('photos')">My Photos</div>
+                <div class="nav-item" onclick="showSection('earnings')">Earnings</div>
+                <div class="nav-item" onclick="showSection('profile')">Profile</div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="header-content">
+            <div class="user-info">
+                <h1>Welcome back, <span id="username">Seller</span>! 💋</h1>
+                <p>Ready to earn money with your stunning lip photos?</p>
+            </div>
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <h3>12</h3>
+                    <p>Photos</p>
+                </div>
+                <div class="stat-card">
+                    <h3>€47</h3>
+                    <p>Earned</p>
+                </div>
+                <div class="stat-card">
+                    <h3>4.9</h3>
+                    <p>Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Overview Section -->
+        <div id="overview-section" class="section-content">
+            <div class="earnings-card">
+                <div class="earnings-amount">€47.20</div>
+                <p>Total Earnings This Month</p>
+                <p style="opacity: 0.8; margin-top: 1rem;">+€12.50 from last week</p>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                    <p>Your latest photo sales and views</p>
+                </div>
+                <div class="section-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #e1e5e9;">
+                        <div>
+                            <strong>Glossy Red Lips</strong> - Sold to @buyer_123
+                        </div>
+                        <div style="color: var(--primary-color); font-weight: bold;">+€2.00</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #e1e5e9;">
+                        <div>
+                            <strong>Natural Beauty Portrait</strong> - 15 new views
+                        </div>
+                        <div style="color: #007bff;">👁️ Views</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                        <div>
+                            <strong>Artistic Lip Art</strong> - Sold to @collector_art
+                        </div>
+                        <div style="color: var(--primary-color); font-weight: bold;">+€2.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div id="upload-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Upload New Photo</h2>
+                    <p>Share your stunning lip photography with the world</p>
+                </div>
+                <div class="section-content">
+                    <div class="upload-zone" onclick="document.getElementById('photoUpload').click()">
+                        <div class="upload-icon">📸</div>
+                        <h3>Click to upload your photo</h3>
+                        <p>or drag and drop your image here</p>
+                        <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+                            Supported: JPG, PNG • Max size: 10MB
+                        </p>
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                    </div>
+
+                    <form id="photoForm" style="margin-top: 2rem; display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photoTitle">Photo Title</label>
+                                <input type="text" id="photoTitle" placeholder="e.g., Glossy Red Lips" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="photoPrice">Price (€)</label>
+                                <input type="number" id="photoPrice" value="2.00" min="1" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="photoDescription">Description</label>
+                            <textarea id="photoDescription" rows="3" placeholder="Describe your photo..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="photoCategory">Category</label>
+                                <select id="photoCategory" required>
+                                    <option value="">Select category</option>
+                                    <option value="glossy">Glossy</option>
+                                    <option value="natural">Natural</option>
+                                    <option value="lipstick">Lipstick</option>
+                                    <option value="artistic">Artistic</option>
+                                    <option value="close-up">Close-up</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="photoTags">Tags (comma separated)</label>
+                                <input type="text" id="photoTags" placeholder="red, glossy, beauty">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%;">Publish Photo - Start Earning!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photos Section -->
+        <div id="photos-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>My Photos</h2>
+                    <p>Manage your uploaded photos and track their performance</p>
+                </div>
+                <div class="section-content">
+                    <div class="photo-grid">
+                        <div class="photo-item">
+                            <img src="assets/images/gallery/gallery_00.jpg" alt="Photo" onerror="this.src='https://via.placeholder.com/250x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <h4>Glossy Red Lips</h4>
+                                <p>€2.00 • 3 sales • 45 views</p>
+                                <div class="photo-actions">
+                                    <button class="btn-small btn-edit">Edit</button>
+                                    <button class="btn-small btn-delete" onclick="deletePhoto(this)">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="photo-item">
+                            <img src="assets/images/gallery/gallery_01.jpg" alt="Photo" onerror="this.src='https://via.placeholder.com/250x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <h4>Natural Pink Lips</h4>
+                                <p>€2.00 • 1 sale • 23 views</p>
+                                <div class="photo-actions">
+                                    <button class="btn-small btn-edit">Edit</button>
+                                    <button class="btn-small btn-delete" onclick="deletePhoto(this)">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="photo-item">
+                            <img src="assets/images/models/model_00.jpg" alt="Photo" onerror="this.src='https://via.placeholder.com/250x200/e91e63/ffffff?text=Photo'">
+                            <div class="photo-info">
+                                <h4>Professional Portrait</h4>
+                                <p>€2.00 • 5 sales • 78 views</p>
+                                <div class="photo-actions">
+                                    <button class="btn-small btn-edit">Edit</button>
+                                    <button class="btn-small btn-delete" onclick="deletePhoto(this)">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings Section -->
+        <div id="earnings-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Earnings & Payouts</h2>
+                    <p>Track your income and request payouts</p>
+                </div>
+                <div class="section-content">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                        <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                            <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">€47.20</h3>
+                            <p>Available Balance</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #007bff 0%, #6610f2 100%); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                            <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">€127.80</h3>
+                            <p>Total Earned</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                            <h3 style="font-size: 2.5rem; margin-bottom: 0.5rem;">24</h3>
+                            <p>Total Sales</p>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" style="margin-bottom: 2rem;" onclick="requestPayout()">Request Payout - €47.20</button>
+
+                    <h3 style="margin-bottom: 1rem;">Recent Transactions</h3>
+                    <div style="background: #f8f9fa; border-radius: 10px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #e1e5e9; font-weight: bold; background: white;">
+                            <span>Photo</span>
+                            <span>Date</span>
+                            <span>Amount</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #e1e5e9;">
+                            <span>Glossy Red Lips</span>
+                            <span>Today</span>
+                            <span style="color: #28a745; font-weight: bold;">+€2.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #e1e5e9;">
+                            <span>Artistic Lip Art</span>
+                            <span>Yesterday</span>
+                            <span style="color: #28a745; font-weight: bold;">+€2.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 1rem;">
+                            <span>Natural Beauty Portrait</span>
+                            <span>2 days ago</span>
+                            <span style="color: #28a745; font-weight: bold;">+€2.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="section-content hidden">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Profile Settings</h2>
+                    <p>Manage your account and preferences</p>
+                </div>
+                <div class="section-content">
+                    <form onsubmit="updateProfile(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileUsername">Username</label>
+                                <input type="text" id="profileUsername" value="seller_demo">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail" value="seller@demo.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="profileBio">Bio</label>
+                            <textarea id="profileBio" rows="3" placeholder="Tell buyers about yourself...">Professional lip photographer with 3+ years experience. Specializing in artistic and natural beauty shots.</textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="payoutMethod">Payout Method</label>
+                                <select id="payoutMethod">
+                                    <option value="paypal">PayPal</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="stripe">Stripe</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="payoutEmail">Payout Email</label>
+                                <input type="email" id="payoutEmail" value="seller@demo.com">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Vérifier l'authentification
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = sessionStorage.getItem('lipsfinderUser');
+            if (!user) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const userData = JSON.parse(user);
+            if (userData.type !== 'seller') {
+                alert('Access denied. Seller account required.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Mettre à jour le nom d'utilisateur
+            document.getElementById('username').textContent = userData.username;
+        });
+
+        // Navigation entre sections
+        function showSection(sectionName) {
+            // Cacher toutes les sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Afficher la section sélectionnée
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Mettre à jour la navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Gérer l'upload de photo
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Vérifications
+                if (file.size > 10 * 1024 * 1024) { // 10MB
+                    alert('File too large. Maximum size is 10MB.');
+                    return;
+                }
+                
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
+                }
+
+                // Afficher le formulaire
+                document.getElementById('photoForm').style.display = 'block';
+                
+                // Créer une preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let preview = document.getElementById('photoPreview');
+                    if (!preview) {
+                        preview = document.createElement('img');
+                        preview.id = 'photoPreview';
+                        preview.style.width = '200px';
+                        preview.style.height = '150px';
+                        preview.style.objectFit = 'cover';
+                        preview.style.borderRadius = '10px';
+                        preview.style.marginTop = '1rem';
+                        document.querySelector('.upload-zone').appendChild(preview);
+                    }
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // Pré-remplir le titre basé sur le nom du fichier
+                const title = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+                document.getElementById('photoTitle').value = title;
+            }
+        }
+
+        // Soumettre une nouvelle photo
+        document.getElementById('photoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('photoTitle').value;
+            const price = document.getElementById('photoPrice').value;
+            const description = document.getElementById('photoDescription').value;
+            const category = document.getElementById('photoCategory').value;
+            const tags = document.getElementById('photoTags').value;
+
+            // Simulation d'upload
+            const loadingBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = loadingBtn.textContent;
+            loadingBtn.textContent = 'Uploading... 📤';
+            loadingBtn.disabled = true;
+
+            setTimeout(() => {
+                alert(`✅ Photo uploaded successfully!\n\nTitle: ${title}\nPrice: €${price}\nCategory: ${category}\n\nYour photo is now live and earning money!`);
+                
+                // Reset form
+                event.target.reset();
+                document.getElementById('photoForm').style.display = 'none';
+                const preview = document.getElementById('photoPreview');
+                if (preview) preview.remove();
+                
+                loadingBtn.textContent = originalText;
+                loadingBtn.disabled = false;
+                
+                // Retourner à la section overview
+                showSection('overview');
+                document.querySelector('[onclick="showSection(\'overview\')"]').classList.add('active');
+            }, 2000);
+        });
+
+        // Supprimer une photo
+        function deletePhoto(button) {
+            const photoItem = button.closest('.photo-item');
+            const photoTitle = photoItem.querySelector('h4').textContent;
+            
+            if (confirm(`Are you sure you want to delete "${photoTitle}"?\n\nThis action cannot be undone.`)) {
+                photoItem.style.transition = 'all 0.3s ease';
+                photoItem.style.transform = 'scale(0)';
+                photoItem.style.opacity = '0';
+                
+                setTimeout(() => {
+                    photoItem.remove();
+                    alert('✅ Photo deleted successfully!');
+                }, 300);
+            }
+        }
+
+        // Demander un paiement
+        function requestPayout() {
+            const amount = '€47.20';
+            if (confirm(`Request payout of ${amount}?\n\nFunds will be transferred to your PayPal account within 2-3 business days.`)) {
+                alert(`✅ Payout requested!\n\nAmount: ${amount}\nMethod: PayPal\nExpected: 2-3 business days\n\nYou'll receive an email confirmation shortly.`);
+            }
+        }
+
+        // Mettre à jour le profil
+        function updateProfile(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('profileUsername').value;
+            const email = document.getElementById('profileEmail').value;
+            const bio = document.getElementById('profileBio').value;
+            
+            // Simulation de sauvegarde
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert(`✅ Profile updated successfully!\n\nUsername: ${username}\nEmail: ${email}`);
+                
+                // Mettre à jour le sessionStorage
+                const user = JSON.parse(sessionStorage.getItem('lipsfinderUser'));
+                user.username = username;
+                user.email = email;
+                sessionStorage.setItem('lipsfinderUser', JSON.stringify(user));
+                
+                // Mettre à jour l'affichage
+                document.getElementById('username').textContent = username;
+                
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 1000);
+        }
+
+        // Déconnexion
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('lipsfinderUser');
+                alert('✅ Logged out successfully!');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Animation au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animer les stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 200);
+            });
+        });

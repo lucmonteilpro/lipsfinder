@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Lips Finder</title>
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💋</text></svg>">
+    
+    <style>
+        :root {
+            --primary-color: #e91e63;
+            --primary-dark: #d81557;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --bg-gradient-start: #fce4ec;
+            --bg-gradient-end: #f8bbd0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .auth-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            opacity: 0.9;
+        }
+
+        .auth-body {
+            padding: 2rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: white;
+            color: var(--primary-color);
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .back-home:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .user-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-type {
+            padding: 1.5rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-type:hover {
+            border-color: var(--primary-color);
+        }
+
+        .user-type.selected {
+            border-color: var(--primary-color);
+            background: var(--bg-gradient-start);
+        }
+
+        .user-type h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .user-type p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 1rem;
+            }
+            
+            .user-type-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-home">← Back to Home</a>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>💋 Welcome to Lips Finder</h1>
+            <p>Join the first lip photography marketplace</p>
+        </div>
+
+        <div class="auth-body">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+                <div class="user-type-selector">
+                    <div class="user-type" onclick="selectUserType('buyer')">
+                        <h3>🛒 Buyer</h3>
+                        <p>Purchase lip photos</p>
+                    </div>
+                    <div class="user-type selected" onclick="selectUserType('seller')">
+                        <h3>📸 Seller</h3>
+                        <p>Sell your photos</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required minlength="3">
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let selectedUserType = 'seller';
+
+        // Utilisateurs demo (en production, utiliser une vraie base de données)
+        const demoUsers = {
+            'buyer@demo.com': { password: 'demo123', type: 'buyer', username: 'buyer_demo' },
+            'seller@demo.com': { password: 'demo123', type: 'seller', username: 'seller_demo' },
+            'admin@demo.com': { password: 'admin123', type: 'seller', username: 'admin' }
+        };
+
+        // Changer d'onglet
+        function switchTab(tab) {
+            // Mettre à jour les onglets
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+
+            // Mettre à jour les formulaires
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(tab + 'Form').classList.add('active');
+        }
+
+        // Sélectionner le type d'utilisateur
+        function selectUserType(type) {
+            selectedUserType = type;
+            document.querySelectorAll('.user-type').forEach(t => t.classList.remove('selected'));
+            event.target.closest('.user-type').classList.add('selected');
+        }
+
+        // Gérer la connexion
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Vérifier les identifiants
+            const user = demoUsers[email];
+            if (user && user.password === password) {
+                // Sauvegarder la session
+                const userData = {
+                    email: email,
+                    type: user.type,
+                    username: user.username,
+                    loginTime: new Date().toISOString()
+                };
+                
+                sessionStorage.setItem('lipsfinderUser', JSON.stringify(userData));
+                
+                // Rediriger selon le type d'utilisateur
+                if (user.type === 'buyer') {
+                    window.location.href = 'buyer-dashboard.html';
+                } else {
+                    window.location.href = 'seller-dashboard.html';
+                }
+            } else {
+                alert('❌ Invalid email or password.\n\nDemo accounts:\n• buyer@demo.com / demo123\n• seller@demo.com / demo123');
+            }
+        }
+
+        // Gérer l'inscription
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const username = document.getElementById('username').value;
+
+            // Validations
+            if (password !== confirmPassword) {
+                alert('❌ Passwords do not match!');
+                return;
+            }
+
+            if (demoUsers[email]) {
+                alert('❌ Email already exists! Try logging in.');
+                return;
+            }
+
+            // Créer le compte (simulation)
+            const newUser = {
+                email: email,
+                type: selectedUserType,
+                username: username,
+                loginTime: new Date().toISOString()
+            };
+
+            // Sauvegarder la session
+            sessionStorage.setItem('lipsfinderUser', JSON.stringify(newUser));
+            
+            // Message de succès
+            alert(`✅ Account created successfully!\n\nWelcome ${username}!\nAccount type: ${selectedUserType}`);
+
+            // Rediriger selon le type
+            if (selectedUserType === 'buyer') {
+                window.location.href = 'buyer-dashboard.html';
+            } else {
+                window.location.href = 'seller-dashboard.html';
+            }
+        }
+
+        // Vérifier si déjà connecté
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = sessionStorage.getItem('lipsfinderUser');
+            if (user) {
+                const userData = JSON.parse(user);
+                if (confirm(`You're already logged in as ${userData.username}.\n\nGo to dashboard?`)) {
+                    if (userData.type === 'buyer') {
+                        window.location.href = 'buyer-dashboard.html';
+                    } else {
+                        window.location.href = 'seller-dashboard.html';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

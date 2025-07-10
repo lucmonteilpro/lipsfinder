@@ -3,222 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Lips - Lips Finder</title>
+    <title>Browse Lip Photos - Lips Finder</title>
+    <meta name="description" content="Browse and buy stunning lip photos from verified models. Prices starting at €2. Secure payments and instant downloads.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💋</text></svg>">
+    
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Fix 100% zoom issue -->
     <style>
-        .browse-section {
-            max-width: 1200px;
-            margin: 100px auto 50px;
-            padding: 2rem;
+        html {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
         }
+        
+        body {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
+        }
+        
+        /* Browse Page Specific Styles */
+        .browse-header {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+        }
+        
+        .browse-header h1 {
+            font-size: 3rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .browse-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
         .filters {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 3rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .filter-btn {
-            padding: 0.5rem 1.5rem;
-            border: 2px solid #e91e63;
             background: white;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .filter-btn:hover, .filter-btn.active {
-            background: #e91e63;
-            color: white;
-        }
-        .lips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        
+        .filter-row {
+            display: flex;
             gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        .lip-card {
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .photo-card {
             background: white;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
-        .lip-card:hover {
-            transform: translateY(-5px);
+        
+        .photo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
-        .lip-card img {
+        
+        .photo-card img {
             width: 100%;
             height: 250px;
             object-fit: cover;
         }
-        .lip-info {
+        
+        .photo-info {
             padding: 1.5rem;
         }
-        .lip-price {
-            font-size: 1.5rem;
-            color: #e91e63;
-            font-weight: bold;
+        
+        .photo-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
         }
-        .lip-seller {
-            color: #999;
+        
+        .photo-model {
+            color: var(--text-light);
             font-size: 0.9rem;
-            margin-top: 0.5rem;
+            margin-bottom: 1rem;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
+        
+        .photo-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .modal-content {
-            background: white;
-            margin: 5% auto;
+        
+        .photo-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .buy-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .buy-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        
+        .stats-bar {
+            background: var(--primary-color);
+            color: white;
             padding: 2rem;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
             text-align: center;
+            margin: 4rem 0;
         }
-        .modal img {
-            width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-            margin-bottom: 2rem;
-            border-radius: 10px;
+        
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-home {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: white;
+            color: var(--primary-color);
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .back-home:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .browse-header h1 {
+                font-size: 2rem;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .photos-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stats-row {
+                gap: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <a href="index.html" class="logo">💋 Lips Finder</a>
-            <div class="nav-links">
-                <a href="browse.html">Browse</a>
-                <a href="seller.html">Sell</a>
-                <a href="#">Cart (0)</a>
-                <a href="#" class="btn-primary">Sign In</a>
+    <!-- Back to Home Button -->
+    <a href="index.html" class="back-home">← Back to Home</a>
+
+    <!-- Browse Header -->
+    <section class="browse-header">
+        <h1>💋 Browse Lip Photos</h1>
+        <p>Discover stunning lip photography from verified models. Instant download after purchase.</p>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label for="category">Category</label>
+                <select id="category">
+                    <option value="all">All Photos</option>
+                    <option value="models">Model Photos</option>
+                    <option value="lips">Lip Close-ups</option>
+                    <option value="glossy">Glossy</option>
+                    <option value="natural">Natural</option>
+                </select>
             </div>
-        </nav>
-    </header>
-
-    <!-- Browse Section -->
-    <div class="browse-section">
-        <h1>Browse Lip Photos</h1>
-        
-        <!-- Filters -->
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterPhotos('all')">All</button>
-            <button class="filter-btn" onclick="filterPhotos('red')">Red Lips</button>
-            <button class="filter-btn" onclick="filterPhotos('pink')">Pink Lips</button>
-            <button class="filter-btn" onclick="filterPhotos('nude')">Nude Lips</button>
-            <button class="filter-btn" onclick="filterPhotos('glossy')">Glossy</button>
-            <button class="filter-btn" onclick="filterPhotos('matte')">Matte</button>
-            <select style="padding: 0.5rem 1rem; border-radius: 25px; border: 2px solid #e91e63;">
-                <option>Sort by: Popular</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Newest First</option>
-            </select>
+            <div class="filter-group">
+                <label for="price">Price Range</label>
+                <select id="price">
+                    <option value="all">All Prices</option>
+                    <option value="2">€2.00</option>
+                    <option value="5">€5.00 and under</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="sort">Sort By</label>
+                <select id="sort">
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="price-low">Price: Low to High</option>
+                </select>
+            </div>
         </div>
+    </section>
 
-        <!-- Lips Grid -->
-        <div class="lips-grid" id="lipsGrid">
-            <!-- Demo photos - in production these would come from database -->
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="stats-row">
+            <div class="stat-item">
+                <h3 id="total-photos">45</h3>
+                <p>Photos Available</p>
+            </div>
+            <div class="stat-item">
+                <h3>€2</h3>
+                <p>Starting Price</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Verified Models</p>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Purchase Modal -->
-    <div id="purchaseModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()" style="float: right; font-size: 2rem; cursor: pointer;">&times;</span>
-            <img id="modalImage" src="" alt="Lip photo">
-            <h2>Purchase This Photo</h2>
-            <p class="lip-price" id="modalPrice">$10</p>
-            <p>High resolution, watermark-free version</p>
-            <button class="btn-primary" onclick="purchasePhoto()" style="width: 100%; margin-top: 2rem;">Buy Now</button>
+    <!-- Photos Grid -->
+    <section class="photos-grid" id="photos-container">
+        <!-- Les photos seront ajoutées dynamiquement par JavaScript -->
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #333; color: white; padding: 3rem 2rem 1rem; text-align: center; margin-top: 4rem;">
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <a href="index.html" style="color: white; text-decoration: none;">Home</a>
+            <a href="seller.html" style="color: white; text-decoration: none;">Become a Seller</a>
+            <a href="login-simple.html" style="color: white; text-decoration: none;">Login</a>
+            <a href="#" style="color: white; text-decoration: none;">Help</a>
+            <a href="#" style="color: white; text-decoration: none;">Contact</a>
         </div>
-    </div>
+        <p>&copy; 2024 Lips Finder. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Demo data - in production this would come from API
-        const demoPhotos = [
-            { id: 1, price: 15, seller: 'BeautyLips', category: 'red', image: 'assets/images/gallery/lips1.jpg' },
-            { id: 2, price: 10, seller: 'GlossyQueen', category: 'pink', image: 'assets/images/gallery/lips2.jpg' },
-            { id: 3, price: 20, seller: 'LipArt', category: 'nude', image: 'assets/images/gallery/lips3.jpg' },
-            { id: 4, price: 12, seller: 'PerfectPout', category: 'red', image: 'assets/images/gallery/lips4.jpg' },
-            { id: 5, price: 18, seller: 'LipLover', category: 'glossy', image: 'assets/images/gallery/lips5.jpg' },
-            { id: 6, price: 25, seller: 'ProLips', category: 'matte', image: 'assets/images/gallery/lips6.jpg' },
-            { id: 7, price: 15, seller: 'BeautyPro', category: 'pink', image: 'assets/images/gallery/lips7.jpg' },
-            { id: 8, price: 30, seller: 'LuxuryLips', category: 'red', image: 'assets/images/gallery/lips8.jpg' }
-        ];
+        // Configuration des photos
+        const photosData = {
+            models: [
+                { id: 'model_00', name: 'Sophia Verified', title: 'Professional Model Portrait', price: '€2.00' },
+                { id: 'model_01', name: 'Emma Lips', title: 'Elegant Beauty Shot', price: '€2.00' },
+                { id: 'model_02', name: 'Olivia Model', title: 'Natural Beauty Portrait', price: '€2.00' },
+                { id: 'model_03', name: 'Isabella Verified', title: 'Studio Fashion Shot', price: '€2.00' },
+                { id: 'model_04', name: 'Mia Beauty', title: 'Glamour Portrait', price: '€2.00' },
+                { id: 'model_05', name: 'Luna Artist', title: 'Artistic Beauty Photo', price: '€2.00' },
+                { id: 'model_06', name: 'Aria Model', title: 'Professional Headshot', price: '€2.00' },
+                { id: 'model_07', name: 'Zoe Verified', title: 'Elegant Model Shot', price: '€2.00' },
+                { id: 'model_08', name: 'Maya Luxury', title: 'Luxury Portrait', price: '€2.00' },
+                { id: 'model_09', name: 'Jade Fashion', title: 'Fashion Portrait', price: '€2.00' },
+                { id: 'model_10', name: 'Nova Creative', title: 'Creative Shot', price: '€2.00' },
+                { id: 'model_11', name: 'Raven Bold', title: 'Bold Beauty', price: '€2.00' },
+                { id: 'model_12', name: 'Vintage Vera', title: 'Vintage Style', price: '€2.00' },
+                { id: 'model_13', name: 'Cleo Modern', title: 'Modern Classic', price: '€2.00' },
+                { id: 'model_14', name: 'Aurora Sunset', title: 'Sunset Portrait', price: '€2.00' },
+                { id: 'model_15', name: 'Urban Ivy', title: 'Street Style', price: '€2.00' },
+                { id: 'model_16', name: 'Stella Fashion', title: 'High Fashion', price: '€2.00' },
+                { id: 'model_17', name: 'Luna Dreamy', title: 'Dreamy Portrait', price: '€2.00' },
+                { id: 'model_18', name: 'Boho Belle', title: 'Bohemian Style', price: '€2.00' },
+                { id: 'model_19', name: 'Grace Classic', title: 'Classic Beauty', price: '€2.00' },
+                { id: 'model_20', name: 'Ella Elegant', title: 'Modern Elegance', price: '€2.00' },
+                { id: 'model_21', name: 'Timeless Tara', title: 'Timeless Portrait', price: '€2.00' }
+            ],
+            gallery: [
+                { id: 'gallery_00', name: 'Ruby Lips', title: 'Glossy Red Lips', price: '€2.00' },
+                { id: 'gallery_01', name: 'Rose Natural', title: 'Natural Pink Lips', price: '€2.00' },
+                { id: 'gallery_02', name: 'Scarlet Bold', title: 'Bold Lipstick Look', price: '€2.00' },
+                { id: 'gallery_03', name: 'Pearl Artistic', title: 'Artistic Beauty Shot', price: '€2.00' },
+                { id: 'gallery_04', name: 'Crystal Fresh', title: 'Fresh Lip Look', price: '€2.00' },
+                { id: 'gallery_05', name: 'Velvet Lips', title: 'Sensual Close-up', price: '€2.00' },
+                { id: 'gallery_06', name: 'Cherry Classic', title: 'Classic Red Lips', price: '€2.00' },
+                { id: 'gallery_07', name: 'Amber Art', title: 'Artistic Lip Art', price: '€2.00' },
+                { id: 'gallery_08', name: 'Golden Glow', title: 'Sunset Glow', price: '€2.00' },
+                { id: 'gallery_09', name: 'Metallic Muse', title: 'Metallic Shine', price: '€2.00' },
+                { id: 'gallery_10', name: 'Ocean Blues', title: 'Ocean Blue', price: '€2.00' },
+                { id: 'gallery_11', name: 'Purple Magic', title: 'Purple Magic', price: '€2.00' },
+                { id: 'gallery_12', name: 'Coral Dreams', title: 'Coral Dreams', price: '€2.00' },
+                { id: 'gallery_13', name: 'Midnight Kiss', title: 'Midnight Kiss', price: '€2.00' },
+                { id: 'gallery_14', name: 'Rose Gold', title: 'Rose Gold', price: '€2.00' },
+                { id: 'gallery_15', name: 'Berry Burst', title: 'Berry Burst', price: '€2.00' },
+                { id: 'gallery_16', name: 'Champagne Lips', title: 'Champagne Lips', price: '€2.00' },
+                { id: 'gallery_17', name: 'Emerald Green', title: 'Emerald Green', price: '€2.00' },
+                { id: 'gallery_18', name: 'Silver Spark', title: 'Silver Spark', price: '€2.00' },
+                { id: 'gallery_19', name: 'Cotton Candy', title: 'Cotton Candy', price: '€2.00' },
+                { id: 'gallery_20', name: 'Velvet Touch', title: 'Velvet Touch', price: '€2.00' },
+                { id: 'gallery_21', name: 'Neon Dreams', title: 'Neon Dreams', price: '€2.00' },
+                { id: 'gallery_22', name: 'Crystal Clear', title: 'Crystal Clear', price: '€2.00' }
+            ]
+        };
 
-        // Load photos
-        function loadPhotos(photos = demoPhotos) {
-            const grid = document.getElementById('lipsGrid');
-            grid.innerHTML = photos.map(photo => `
-                <div class="lip-card" onclick="showPurchaseModal(${photo.id}, '${photo.image}', ${photo.price})">
-                    <img src="${photo.image}" alt="Lip photo">
-                    <div class="lip-info">
-                        <div class="lip-price">$${photo.price}</div>
-                        <div class="lip-seller">by ${photo.seller}</div>
+        // Fonction pour créer une carte photo
+        function createPhotoCard(photo, folder) {
+            const photoCard = document.createElement('div');
+            photoCard.className = 'photo-card';
+            photoCard.onclick = () => buyPhoto(photo.id, photo.price);
+            
+            photoCard.innerHTML = `
+                <img src="assets/images/${folder}/${photo.id}.jpg" alt="${photo.title}" loading="lazy">
+                <div class="photo-info">
+                    <div class="photo-title">${photo.title}</div>
+                    <div class="photo-model">by @${photo.name.toLowerCase().replace(/\s+/g, '_')} ✓</div>
+                    <div class="photo-footer">
+                        <div class="photo-price">${photo.price}</div>
+                        <button class="buy-btn">Buy Now</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            
+            return photoCard;
         }
 
-        // Filter photos
-        function filterPhotos(category) {
-            // Update active button
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
+        // Fonction pour afficher toutes les photos
+        function displayAllPhotos() {
+            const container = document.getElementById('photos-container');
+            container.innerHTML = '';
+            
+            // Ajouter les photos des modèles
+            photosData.models.forEach(photo => {
+                const card = createPhotoCard(photo, 'models');
+                container.appendChild(card);
             });
-            event.target.classList.add('active');
-
-            // Filter photos
-            if (category === 'all') {
-                loadPhotos();
-            } else {
-                const filtered = demoPhotos.filter(photo => photo.category === category);
-                loadPhotos(filtered);
-            }
+            
+            // Ajouter les photos de la galerie
+            photosData.gallery.forEach(photo => {
+                const card = createPhotoCard(photo, 'gallery');
+                container.appendChild(card);
+            });
+            
+            // Mettre à jour le nombre total
+            const totalPhotos = photosData.models.length + photosData.gallery.length;
+            document.getElementById('total-photos').textContent = totalPhotos;
         }
 
-        // Show purchase modal
-        function showPurchaseModal(id, image, price) {
-            document.getElementById('modalImage').src = image;
-            document.getElementById('modalPrice').textContent = `$${price}`;
-            document.getElementById('purchaseModal').style.display = 'block';
+        // Fonction d'achat
+        function buyPhoto(photoId, price) {
+            alert(`🛒 Purchase Initiated!\n\nPhoto: ${photoId}\nPrice: ${price}\n\nRedirecting to secure payment...`);
+            
+            // Simulation d'achat
+            setTimeout(() => {
+                if (confirm(`Confirm purchase of ${photoId} for ${price}?`)) {
+                    alert(`✅ Purchase successful!\n\nDownload link sent to your email.\nThank you for choosing Lips Finder!`);
+                }
+            }, 500);
         }
 
-        // Close modal
-        function closeModal() {
-            document.getElementById('purchaseModal').style.display = 'none';
+        // Animation au scroll
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.photo-card');
+            
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const cardBottom = card.getBoundingClientRect().bottom;
+                
+                if (cardTop < window.innerHeight && cardBottom > 0) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
         }
 
-        // Purchase photo
-        function purchasePhoto() {
-            alert('Demo: In production, this would process payment via Stripe and provide download link');
-            closeModal();
-        }
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Afficher toutes les photos
+            displayAllPhotos();
+            
+            // Animation au scroll
+            window.addEventListener('scroll', animateOnScroll);
+            
+            // Filtres (simulation)
+            document.getElementById('category').addEventListener('change', function() {
+                console.log('Filter by category:', this.value);
+                // Ici on pourrait filtrer les photos selon la catégorie
+            });
 
-        // Load photos on page load
-        loadPhotos();
+            document.getElementById('price').addEventListener('change', function() {
+                console.log('Filter by price:', this.value);
+            });
 
-        // Close modal on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('purchaseModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
+            document.getElementById('sort').addEventListener('change', function() {
+                console.log('Sort by:', this.value);
+            });
+        });
     </script>
 </body>
 </html>

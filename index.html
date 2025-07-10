@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lucmonteilpro.github.io/lipsfinder/">
     <meta property="og:title" content="Lips Finder - The First Lip Photography Marketplace">
-    <meta property="og:description" content="Turn your perfect pout into profit! Join the first marketplace dedicated to lip photography. Earn 80% commission on every sale.">
+    <meta property="og:description" content="Turn your perfect Lips into profit! Join the first marketplace dedicated to lip photography. Earn 80% commission on every sale.">
     <meta property="og:image" content="https://lucmonteilpro.github.io/lipsfinder/assets/images/og-image.jpg">
     
     <!-- Twitter -->
@@ -31,12 +31,147 @@
     
     <link rel="stylesheet" href="assets/css/style.css">
     
-    <!-- Fix viewport scaling -->
+    <!-- Fix 100% zoom issue -->
     <style>
-        html, body {
-            zoom: 1;
-            transform: scale(1);
-            transform-origin: 0 0;
+        html {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
+        }
+        
+        body {
+            zoom: 1 !important;
+            transform: scale(1) !important;
+            transform-origin: 0 0 !important;
+        }
+        
+        /* Fix pour grille Models 4x2 */
+        .models-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            grid-template-rows: repeat(2, 1fr) !important;
+            gap: 1.5rem !important;
+            max-width: 1200px !important;
+            margin: 2rem auto !important;
+        }
+        
+        /* Fix pour grille Gallery 5+3 */
+        .gallery-grid {
+            display: grid !important;
+            grid-template-columns: repeat(5, 1fr) !important;
+            gap: 1.5rem !important;
+            max-width: 1200px !important;
+            margin: 2rem auto !important;
+        }
+        
+        /* Les 3 dernières photos centrées */
+        .gallery-item:nth-child(6) {
+            grid-column: 2 / 3;
+        }
+        
+        .gallery-item:nth-child(7) {
+            grid-column: 3 / 4;
+        }
+        
+        .gallery-item:nth-child(8) {
+            grid-column: 4 / 5;
+        }
+        
+        /* Fix centrage section valuation */
+        .valuation-tool {
+            text-align: center !important;
+            padding: 4rem 2rem !important;
+            background: #f8f9fa !important;
+        }
+        
+        .valuation-tool h2 {
+            text-align: center !important;
+            margin-bottom: 2rem !important;
+        }
+        
+        .valuation-tool p {
+            text-align: center !important;
+            max-width: 800px !important;
+            margin: 0 auto 2rem !important;
+        }
+        
+        .upload-area {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 1.5rem !important;
+        }
+        
+        /* Fix badges sécurité */
+        .safety-icons {
+            display: flex !important;
+            gap: 2rem !important;
+            justify-content: center !important;
+        }
+        
+        .safety-badge {
+            width: 120px !important;
+            height: 120px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: white !important;
+            font-weight: bold !important;
+            font-size: 0.9rem !important;
+            text-align: center !important;
+        }
+        
+        .security-badge {
+            background: linear-gradient(135deg, #7C3AED, #5B21B6) !important;
+        }
+        
+        .verified-badge {
+            background: linear-gradient(135deg, #E91E63, #C2185B) !important;
+        }
+        
+        /* Auth button dans header */
+        .auth-button {
+            background: #e91e63 !important;
+            color: white !important;
+            padding: 0.7rem 1.5rem !important;
+            border-radius: 25px !important;
+            text-decoration: none !important;
+            font-weight: 600 !important;
+            transition: all 0.3s !important;
+        }
+        
+        .auth-button:hover {
+            background: #c2185b !important;
+            transform: scale(1.05) !important;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .models-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                grid-template-rows: repeat(4, 1fr) !important;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            .gallery-item:nth-child(6),
+            .gallery-item:nth-child(7),
+            .gallery-item:nth-child(8) {
+                grid-column: span 1 !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .models-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
     
@@ -66,6 +201,7 @@
                 <a href="#features">Features</a>
                 <a href="#pricing">Pricing</a>
                 <a href="browse.html" class="btn-primary">Browse Lips</a>
+                <a href="login-simple.html" class="auth-button">Login / Sign Up</a>
             </div>
         </nav>
     </header>
@@ -142,34 +278,34 @@
         </div>
     </section>
 
-    <!-- Verified Models Section CORRIGÉE -->
+    <!-- Verified Models Section - GRILLE 4x2 -->
     <section class="verified-models">
         <h2>VERIFIED MODELS</h2>
         <div class="models-showcase">
             <div class="models-grid">
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_00.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1531853121101-cb94c8ed218d?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_00.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_01.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_01.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_02.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_02.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_03.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1597393922738-085ea04b5a07?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_03.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_04.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1596650281084-e8c7644acf52?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_04.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_05.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1453396450673-3fe83d2db2c4?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_05.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_06.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1594819047050-99defca82545?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_06.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
                 <div class="model-card" onclick="window.location.href='browse.html'">
-                    <img src="assets/images/models/model_07.jpg" alt="Verified Model - Focus Lips" onerror="this.src='https://images.unsplash.com/photo-1582610285985-a42d9193f2fd?q=80&w=300&h=400&fit=crop'">
+                    <img src="assets/images/models/model_07.jpg" alt="Verified Model" style="cursor: pointer;">
                 </div>
             </div>
             <h3>See millions of verified models</h3>
@@ -234,40 +370,40 @@
         <a href="browse.html" class="btn-primary">SEE MORE CATEGORIES</a>
     </section>
 
-    <!-- Free Photos Gallery CORRIGÉE -->
+    <!-- Free Photos Gallery - GRILLE 5+3 avec photos de /gallery -->
     <section class="photo-gallery">
         <h2>FREE LIP PHOTOGRAPHY SAMPLES</h2>
         <p>Explore thousands of free lip photos from verified models whose identity is verified!</p>
         <div class="gallery-grid">
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_00.jpg" alt="Glossy Red Lips" onerror="this.src='https://images.unsplash.com/photo-1602522354633-22df99cd9f24?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_00.jpg" alt="Glossy Red Lips" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_01.jpg" alt="Natural Pink Lips" onerror="this.src='https://images.unsplash.com/photo-1596224210294-d36d5e916510?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_01.jpg" alt="Natural Pink Lips" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_02.jpg" alt="Red Lipstick with Piercings" onerror="this.src='https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_02.jpg" alt="Bold Lipstick" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_03.jpg" alt="White Cream on Face" onerror="this.src='https://images.unsplash.com/photo-1616394158437-de5d8e7de37a?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_03.jpg" alt="Artistic Lips" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_04.jpg" alt="Woman in Water with Droplets" onerror="this.src='https://images.unsplash.com/photo-1599842906196-9083e011089f?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_04.jpg" alt="Fresh Lips" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_05.jpg" alt="Tongue Close-up" onerror="this.src='https://images.unsplash.com/photo-1534349735944-2b3a6f7a268f?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_05.jpg" alt="Sensual Close-up" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_06.jpg" alt="Red Lipstick and Black Mascara" onerror="this.src='https://images.unsplash.com/photo-1633676850759-8039e46f2eda?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_06.jpg" alt="Classic Red" style="cursor: pointer;">
             </div>
             <div class="gallery-item" onclick="window.location.href='browse.html'">
-                <img src="assets/images/gallery/gallery_07.jpg" alt="Artistic Lip Photography" onerror="this.src='https://images.unsplash.com/photo-1534349735944-2b3a6f7a268f?q=80&w=350&h=250&fit=crop'">
+                <img src="assets/images/gallery/gallery_07.jpg" alt="Artistic Photography" style="cursor: pointer;">
             </div>
         </div>
         <a href="browse.html" class="btn-primary">VIEW LIP PHOTOS</a>
     </section>
 
-    <!-- Valuation Tool -->
+    <!-- Valuation Tool - CENTRÉ -->
     <section class="valuation-tool">
         <h2>HOW MUCH ARE YOUR LIPS WORTH?</h2>
         <p>Upload a photo of your lips and our expert analysis system, powered by our unique AI algorithm with millions of data points, will reveal how much you could potentially earn with your lips!</p>
@@ -291,7 +427,7 @@
         </form>
     </section>
 
-    <!-- Is Lips Finder Safe -->
+    <!-- Is Lips Finder Safe - BADGES CORRIGÉS -->
     <section class="safety-section">
         <h2>IS LIPS FINDER SAFE?</h2>
         <div class="safety-content">
@@ -306,8 +442,12 @@
                 </ul>
             </div>
             <div class="safety-icons">
-                <img src="https://via.placeholder.com/150x150/7C3AED/FFFFFF?text=Secure" alt="Security Badge">
-                <img src="https://via.placeholder.com/150x150/E91E63/FFFFFF?text=Verified" alt="Verified Badge">
+                <div class="safety-badge security-badge">
+                    🔒<br>SECURE<br>CERTIFIED
+                </div>
+                <div class="safety-badge verified-badge">
+                    ✓<br>VERIFIED<br>PLATFORM
+                </div>
             </div>
         </div>
     </section>
